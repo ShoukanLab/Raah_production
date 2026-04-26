@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
+import { PageShell } from "@/components/layout";
 
 export const metadata: Metadata = {
   title: {
@@ -23,8 +24,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen bg-void text-champagne">
-        {children}
+      <body className="m-0 p-0 bg-void text-champagne">
+        <PageShell>{children}</PageShell>
       </body>
     </html>
   );
