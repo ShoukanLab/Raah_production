@@ -1,18 +1,19 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
-import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./schemaTypes";
+import { projectId, dataset, apiVersion } from "./env";
 
 export default defineConfig({
+  basePath: "/studio",
   name: "raah-production",
   title: "Raah Production CMS",
 
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production",
+  projectId,
+  dataset,
+  apiVersion,
 
   plugins: [
     structureTool(),
-    visionTool(), // GROQ query playground — remove in production if preferred
   ],
 
   schema: {
