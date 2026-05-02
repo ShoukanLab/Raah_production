@@ -25,43 +25,56 @@ export const showType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "doorsOpen",
-      title: "Doors Open",
-      type: "datetime",
+      name: "doorsTime",
+      title: "Doors Open (HH:MM)",
+      type: "string",
+      description: "Time doors open, e.g. 19:30",
+      validation: (Rule) =>
+        Rule.regex(/^\d{2}:\d{2}$/, { name: "HH:MM format", invert: false }).warning("Enter time in HH:MM format"),
     }),
     defineField({
-      name: "venueName",
-      title: "Venue Name",
+      name: "venue",
+      title: "Venue",
+      type: "object",
+      fields: [
+        defineField({
+          name: "name",
+          title: "Venue Name",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "city",
+          title: "City",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "address",
+          title: "Address",
+          type: "string",
+        }),
+      ],
+      options: { collapsible: true, collapsed: false },
+    }),
+    defineField({
+      name: "genre",
+      title: "Genre",
       type: "string",
+      options: {
+        list: [
+          { title: "Jazz", value: "Jazz" },
+          { title: "Electronic", value: "Electronic" },
+          { title: "Acoustic", value: "Acoustic" },
+          { title: "Orchestral", value: "Orchestral" },
+        ],
+        layout: "radio",
+      },
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "venueAddress",
-      title: "Venue Address",
-      type: "string",
-    }),
-    defineField({
-      name: "city",
-      title: "City",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: "capacity",
-      title: "Venue Capacity",
-      type: "number",
-      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: "description",
-      title: "Short Description",
-      type: "text",
-      rows: 3,
-      validation: (Rule) => Rule.max(300),
-    }),
-    defineField({
-      name: "longDescription",
-      title: "Full Description",
+      title: "Description",
       type: "array",
       of: [
         {
@@ -69,7 +82,6 @@ export const showType = defineType({
           styles: [
             { title: "Normal", value: "normal" },
             { title: "Heading", value: "h2" },
-            { title: "Subheading", value: "h3" },
           ],
           marks: {
             decorators: [
@@ -81,24 +93,20 @@ export const showType = defineType({
       ],
     }),
     defineField({
-      name: "lineup",
-      title: "Lineup",
-      type: "array",
-      of: [
-        {
-          type: "object",
-          name: "artist",
-          fields: [
-            defineField({ name: "name", title: "Artist Name", type: "string", validation: (Rule) => Rule.required() }),
-            defineField({ name: "role", title: "Role / Set", type: "string" }),
-            defineField({ name: "bio", title: "Short Bio", type: "text", rows: 2 }),
-            defineField({ name: "image", title: "Artist Photo", type: "image", options: { hotspot: true } }),
-          ],
-          preview: {
-            select: { title: "name", subtitle: "role", media: "image" },
-          },
-        },
-      ],
+      name: "status",
+      title: "Status",
+      type: "string",
+      options: {
+        list: [
+          { title: "Upcoming", value: "upcoming" },
+          { title: "Selling Fast", value: "selling_fast" },
+          { title: "Sold Out", value: "sold_out" },
+          { title: "Completed", value: "completed" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "upcoming",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "poster",
@@ -106,18 +114,47 @@ export const showType = defineType({
       type: "image",
       options: { hotspot: true },
       fields: [
-        defineField({ name: "alt", title: "Alt Text", type: "string" }),
+        defineField({
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
       ],
     }),
     defineField({
-      name: "galleryImages",
-      title: "Gallery Images",
+      name: "lineup",
+      title: "Lineup",
       type: "array",
       of: [
         {
-          type: "image",
-          options: { hotspot: true },
-          fields: [defineField({ name: "alt", title: "Alt Text", type: "string" })],
+          type: "object",
+          name: "lineupItem",
+          fields: [
+            defineField({
+              name: "artistName",
+              title: "Artist Name",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "role",
+              title: "Role",
+              type: "string",
+              description: "e.g. Headliner, Featured Artist, DJ",
+            }),
+            defineField({
+              name: "setTime",
+              title: "Set Time (HH:MM)",
+              type: "string",
+              description: "When this artist performs, e.g. 21:00",
+              validation: (Rule) =>
+                Rule.regex(/^\d{2}:\d{2}$/, { name: "HH:MM format", invert: false }).warning("Enter time in HH:MM format"),
+            }),
+          ],
+          preview: {
+            select: { title: "artistName", subtitle: "setTime" },
+          },
         },
       ],
     }),
@@ -128,15 +165,23 @@ export const showType = defineType({
       description: "Links this CMS entry to the Supabase shows table for ticketing.",
       readOnly: true,
     }),
+    defineField({
+      name: "featured",
+      title: "Featured on Homepage",
+      type: "boolean",
+      initialValue: false,
+      description: "Pin this show to the top of the homepage carousel",
+    }),
   ],
   preview: {
     select: {
       title: "name",
       date: "date",
-      venue: "venueName",
+      venue: "venue.name",
       media: "poster",
+      status: "status",
     },
-    prepare({ title, date, venue, media }) {
+    prepare({ title, date, venue, media, status }) {
       const formatted = date
         ? new Date(date).toLocaleDateString("en-GB", {
             day: "numeric",
@@ -144,7 +189,12 @@ export const showType = defineType({
             year: "numeric",
           })
         : "No date";
-      return { title, subtitle: `${formatted} — ${venue ?? "No venue"}`, media };
+      const statusLabel = status ? ` — ${status}` : "";
+      return {
+        title,
+        subtitle: `${formatted} — ${venue ?? "No venue"}${statusLabel}`,
+        media,
+      };
     },
   },
 });

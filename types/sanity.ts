@@ -6,12 +6,21 @@ export interface SanityImage {
   alt?: string;
 }
 
-export interface LineupArtist {
-  _key: string;
+export interface Venue {
   name: string;
+  city: string;
+  address?: string;
+}
+
+export type Genre = "Jazz" | "Electronic" | "Acoustic" | "Orchestral";
+
+export type ShowStatus = "upcoming" | "selling_fast" | "sold_out" | "completed";
+
+export interface LineupItem {
+  _key: string;
+  artistName: string;
   role?: string;
-  bio?: string;
-  image?: SanityImage;
+  setTime?: string;
 }
 
 export interface Show {
@@ -22,17 +31,15 @@ export interface Show {
   name: string;
   slug: { current: string };
   date: string;
-  doorsOpen?: string;
-  venueName: string;
-  venueAddress?: string;
-  city: string;
-  capacity: number;
-  description?: string;
-  longDescription?: PortableTextBlock[];
-  lineup?: LineupArtist[];
+  doorsTime?: string;
+  venue: Venue;
+  genre: Genre;
+  description?: PortableTextBlock[];
+  status: ShowStatus;
   poster?: SanityImage;
-  galleryImages?: SanityImage[];
+  lineup?: LineupItem[];
   supabaseShowId?: string;
+  featured: boolean;
 }
 
 // Minimal PortableText block type
