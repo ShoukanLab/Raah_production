@@ -165,6 +165,17 @@ export type Database = {
           error_message: string | null;
         }[];
       };
+      release_ticket_inventory: {
+        Args: {
+          p_ticket_type_id: string;
+          p_quantity_to_release: number;
+        };
+        Returns: {
+          success: boolean;
+          new_quantity_sold: number;
+          error_message: string | null;
+        }[];
+      };
     };
     Enums: {};
     CompositeTypes: {};
