@@ -1,9 +1,15 @@
 import { createServiceRoleClient } from './server';
 import type { Database } from '@/types/database';
 
-export interface TicketTypeWithAvailability
-  extends Database['public']['Tables']['ticket_types']['Row'] {
+type TicketTypeRow = Database['public']['Tables']['ticket_types']['Row'];
+
+export interface TicketTypeWithAvailability extends TicketTypeRow {
   available_quantity: number;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function rpc(client: ReturnType<typeof createServiceRoleClient>, fnName: string, params: any): any {
+  return (client as any).rpc(fnName, params);
 }
 
 export interface ReservationResult {
@@ -25,10 +31,11 @@ export async function getTicketTypes(
 
   const { data, error } = await client
     .from('ticket_types')
-    .select('*')
+    .select('id, show_id, name, type_tag, price, quantity_total, quantity_sold, description, is_visible, created_at')
     .eq('show_id', showId)
     .eq('is_visible', true)
-    .order('created_at', { ascending: true });
+    .order('created_at', { ascending: true })
+    .returns<TicketTypeRow[]>();
 
   if (error) {
     throw new Error(`Failed to fetch ticket types: ${error.message}`);
@@ -50,7 +57,7 @@ export async function checkAvailability(
     .from('ticket_types')
     .select('quantity_total, quantity_sold')
     .eq('id', ticketTypeId)
-    .single();
+    .single<{ quantity_total: number; quantity_sold: number }>();
 
   if (error || !data) {
     return false;
@@ -66,7 +73,7 @@ export async function reserveTickets(
 ): Promise<ReservationResult> {
   const client = createServiceRoleClient();
 
-  const { data, error } = await client.rpc('reserve_ticket_inventory', {
+  const { data, error } = await rpc(client, 'reserve_ticket_inventory', {
     p_ticket_type_id: ticketTypeId,
     p_requested_quantity: quantity,
   });
@@ -83,11 +90,11 @@ export async function reserveTickets(
     };
   }
 
-  const result = data[0];
+  const row = data[0] as { success: boolean; available_quantity: number; error_message: string | null };
   return {
-    success: result.success,
-    available_quantity: result.available_quantity,
-    error_message: result.error_message,
+    success: row.success,
+    available_quantity: row.available_quantity,
+    error_message: row.error_message,
   };
 }
 
@@ -97,7 +104,7 @@ export async function releaseTickets(
 ): Promise<ReleaseResult> {
   const client = createServiceRoleClient();
 
-  const { data, error } = await client.rpc('release_ticket_inventory', {
+  const { data, error } = await rpc(client, 'release_ticket_inventory', {
     p_ticket_type_id: ticketTypeId,
     p_quantity_to_release: quantity,
   });
@@ -114,10 +121,10 @@ export async function releaseTickets(
     };
   }
 
-  const result = data[0];
+  const row = data[0] as { success: boolean; new_quantity_sold: number; error_message: string | null };
   return {
-    success: result.success,
-    new_quantity_sold: result.new_quantity_sold,
-    error_message: result.error_message,
+    success: row.success,
+    new_quantity_sold: row.new_quantity_sold,
+    error_message: row.error_message,
   };
 }
