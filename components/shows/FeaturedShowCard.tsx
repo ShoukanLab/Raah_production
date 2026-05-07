@@ -82,8 +82,13 @@ export function FeaturedShowCard({ show, className }: FeaturedShowCardProps) {
           </h2>
 
           <p className="font-montserrat text-xs text-champagne/70 mb-4">
-            {formatDateLocal(show.date)} • {show.venue.name}
-            {show.venue.city && `, ${show.venue.city}`}
+            {formatDateLocal(show.date)}
+            {show.venue && (
+              <>
+                {' '}• {show.venue.name}
+                {show.venue.city && `, ${show.venue.city}`}
+              </>
+            )}
           </p>
         </div>
       </div>

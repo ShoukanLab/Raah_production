@@ -45,10 +45,12 @@ export function ShowCard({ show, isPast = false, className }: ShowCardProps) {
       {/* Show info — center */}
       <div className="flex-1">
         <h3 className="font-playfair text-lg text-champagne">{show.name}</h3>
-        <p className="font-montserrat text-xs text-champagne/60 mt-0.5">
-          {show.venue.name}
-          {show.venue.city && `, ${show.venue.city}`}
-        </p>
+        {show.venue && (
+          <p className="font-montserrat text-xs text-champagne/60 mt-0.5">
+            {show.venue.name}
+            {show.venue.city && `, ${show.venue.city}`}
+          </p>
+        )}
       </div>
 
       {/* Tag + chevron — right */}
