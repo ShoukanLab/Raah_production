@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { constructStripeEvent } from "@/lib/stripe";
-import { createAdminClient } from "@/lib/supabase";
+import { createServiceRoleClient } from "@/lib/supabase/server";
+import { releaseTickets } from "@/lib/supabase/inventory";
 import { sendOrderConfirmation } from "@/lib/resend";
 import type Stripe from "stripe";
+import type { Database } from "@/types/database";
 
 export const dynamic = "force-dynamic";
 
@@ -22,24 +24,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 
-  const supabase = createAdminClient();
-
   try {
     switch (event.type) {
-      case "payment_intent.succeeded": {
-        await handlePaymentSucceeded(event.data.object as Stripe.PaymentIntent, supabase);
+      case "checkout.session.completed": {
+        await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
         break;
       }
-      case "payment_intent.payment_failed": {
-        await handlePaymentFailed(event.data.object as Stripe.PaymentIntent, supabase);
-        break;
-      }
-      case "charge.refunded": {
-        await handleRefund(event.data.object as Stripe.Charge, supabase);
+      case "checkout.session.expired": {
+        await handleCheckoutExpired(event.data.object as Stripe.Checkout.Session);
         break;
       }
       default:
-        // Unhandled event types are not errors
         break;
     }
   } catch (err) {
@@ -52,28 +47,174 @@ export async function POST(req: NextRequest) {
 
 // ─── Handlers ────────────────────────────────────────────────────────────────
 
-async function handlePaymentSucceeded(
-  paymentIntent: Stripe.PaymentIntent,
+type TicketType = Database["public"]["Tables"]["ticket_types"]["Row"];
+type Show = Database["public"]["Tables"]["shows"]["Row"];
+type Customer = Database["public"]["Tables"]["customers"]["Row"];
+type Order = Database["public"]["Tables"]["orders"]["Row"];
+
+async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
+  const { ticketTypeId, quantity: quantityStr } = session.metadata ?? {};
+
+  if (!ticketTypeId || !quantityStr) {
+    throw new Error(`Missing metadata on session ${session.id}`);
+  }
+
+  const quantity = parseInt(quantityStr, 10);
+  if (!Number.isInteger(quantity) || quantity < 1) {
+    throw new Error(`Invalid quantity in metadata for session ${session.id}: ${quantityStr}`);
+  }
+  const customerEmail = session.customer_details?.email;
+  const customerName = session.customer_details?.name || "";
+
+  if (!customerEmail) {
+    throw new Error(`Missing customer email on session ${session.id}`);
+  }
+
+  const supabase = createServiceRoleClient();
+
+  // Idempotency guard: check if order already exists for this session
+  const { data: existingOrder } = await supabase
+    .from("orders")
+    .select("id")
+    .eq("stripe_session_id", session.id)
+    .single();
+
+  if (existingOrder) {
+    return; // Already processed this session, skip to avoid duplicate emails
+  }
+
+  // Fetch ticket type to get show_id and price
+  const { data: ticketType, error: ticketError } = await supabase
+    .from("ticket_types")
+    .select("id, show_id, name, price")
+    .eq("id", ticketTypeId)
+    .single<TicketType>();
+
+  if (ticketError || !ticketType) {
+    throw new Error(`Ticket type ${ticketTypeId} not found`);
+  }
+
+  // Fetch show details from Supabase
+  const { data: show, error: showError } = await supabase
+    .from("shows")
+    .select("id, name, date, venue")
+    .eq("id", ticketType.show_id)
+    .single<Show>();
+
+  if (showError || !show) {
+    throw new Error(`Show not found for ticket type ${ticketTypeId}`);
+  }
+
+  // Parse customer name into first and last
+  const nameParts = customerName.split(" ");
+  const firstName = nameParts[0] || "";
+  const lastName = nameParts.slice(1).join(" ");
+
+  // Upsert customer (update if exists, insert if new)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  supabase: ReturnType<typeof createAdminClient>
-) {
-  // TODO: Implement checkout.session.completed handler
-  // This webhook is currently written for Payment Intent flow but needs to handle Checkout Sessions
-  console.log('[Stripe webhook] payment_intent.succeeded:', paymentIntent.id);
+  const customerResult = await (supabase.from("customers") as any)
+    .upsert({ email: customerEmail, first_name: firstName, last_name: lastName }, { onConflict: "email" })
+    .select("id")
+    .single();
+
+  const customer = customerResult.data as { id: string } | null;
+  const customerError = customerResult.error;
+
+  if (customerError || !customer) {
+    throw new Error(`Failed to upsert customer: ${customerError?.message}`);
+  }
+
+  // Create order
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const orderResult = await (supabase.from("orders") as any)
+    .insert({ customer_id: customer.id, show_id: show.id, status: "paid", stripe_session_id: session.id })
+    .select("id")
+    .single();
+
+  const order = orderResult.data as { id: string } | null;
+  const orderError = orderResult.error;
+
+  if (orderError || !order) {
+    throw new Error(`Failed to create order: ${orderError?.message}`);
+  }
+
+  // Create order items
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const itemResult = await (supabase.from("order_items") as any).insert({
+    order_id: order.id,
+    ticket_type_id: ticketTypeId,
+    quantity,
+    price_at_purchase: ticketType.price,
+  });
+
+  const itemError = itemResult.error;
+
+  if (itemError) {
+    throw new Error(`Failed to create order items: ${itemError.message}`);
+  }
+
+  // Format totals for email
+  const totalAmount = ((session.amount_total ?? 0) / 100).toLocaleString("en-CA", {
+    style: "currency",
+    currency: "CAD",
+  });
+
+  const showDate = new Date(show.date).toLocaleDateString("en-CA", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  // Send confirmation email (do not throw on failure; order is already written)
+  const emailResult = await sendOrderConfirmation({
+    to: customerEmail,
+    customerName: customerName || "Guest",
+    orderNumber: order.id,
+    showName: show.name,
+    showDate,
+    venue: show.venue,
+    ticketCount: quantity,
+    totalAmount,
+  });
+
+  if (emailResult.error) {
+    console.error(`[Stripe webhook] Email failed for order ${order.id}:`, emailResult.error);
+  }
 }
 
-async function handlePaymentFailed(
-  paymentIntent: Stripe.PaymentIntent,
-  supabase: ReturnType<typeof createAdminClient>
-) {
-  // TODO: Implement checkout.session.completed handler
-  console.log('[Stripe webhook] payment_intent.payment_failed:', paymentIntent.id);
-}
+async function handleCheckoutExpired(session: Stripe.Checkout.Session) {
+  const { ticketTypeId, quantity: quantityStr } = session.metadata ?? {};
 
-async function handleRefund(
-  charge: Stripe.Charge,
-  supabase: ReturnType<typeof createAdminClient>
-) {
-  // TODO: Implement refund handler
-  console.log('[Stripe webhook] charge.refunded:', charge.id);
+  if (!ticketTypeId || !quantityStr) {
+    return; // No metadata to release
+  }
+
+  const quantity = parseInt(quantityStr, 10);
+  if (!Number.isInteger(quantity) || quantity < 1) {
+    throw new Error(`Invalid quantity in metadata for session ${session.id}: ${quantityStr}`);
+  }
+
+  const supabase = createServiceRoleClient();
+
+  // Idempotency guard: do not release if order was already paid (session completed)
+  const { data: existingOrder } = await supabase
+    .from("orders")
+    .select("id")
+    .eq("stripe_session_id", session.id)
+    .single();
+
+  if (existingOrder) {
+    return; // Session already completed, do not release
+  }
+
+  try {
+    await releaseTickets(ticketTypeId, quantity);
+  } catch (err) {
+    console.error(
+      `[Stripe webhook] Failed to release tickets for expired session ${session.id}:`,
+      err
+    );
+    throw err;
+  }
 }
