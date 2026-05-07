@@ -32,7 +32,7 @@ export interface Show {
   slug: { current: string };
   date: string;
   doorsTime?: string;
-  venue: Venue;
+  venue?: Venue;
   genre: Genre;
   description?: PortableTextBlock[];
   status: ShowStatus;
