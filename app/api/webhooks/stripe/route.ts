@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { constructStripeEvent } from "@/lib/stripe";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { releaseTickets } from "@/lib/supabase/inventory";
-import { sendOrderConfirmation } from "@/lib/resend";
+import { sendConfirmation } from "@/lib/resend/sendConfirmation";
 import type Stripe from "stripe";
 import type { Database } from "@/types/database";
 
@@ -153,33 +153,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     throw new Error(`Failed to create order items: ${itemError.message}`);
   }
 
-  // Format totals for email
-  const totalAmount = ((session.amount_total ?? 0) / 100).toLocaleString("en-CA", {
-    style: "currency",
-    currency: "CAD",
-  });
-
-  const showDate = new Date(show.date).toLocaleDateString("en-CA", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
   // Send confirmation email (do not throw on failure; order is already written)
-  const emailResult = await sendOrderConfirmation({
-    to: customerEmail,
-    customerName: customerName || "Guest",
-    orderNumber: order.id,
-    showName: show.name,
-    showDate,
-    venue: show.venue,
-    ticketCount: quantity,
-    totalAmount,
-  });
-
-  if (emailResult.error) {
-    console.error(`[Stripe webhook] Email failed for order ${order.id}:`, emailResult.error);
+  try {
+    await sendConfirmation(order.id);
+  } catch (err) {
+    console.error(`[Stripe webhook] Email failed for order ${order.id}:`, err);
   }
 }
 
