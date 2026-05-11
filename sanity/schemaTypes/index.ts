@@ -1,3 +1,4 @@
 import { showType } from "./show";
+import { contactInfoType } from "./contactInfo";
 
-export const schemaTypes = [showType];
+export const schemaTypes = [showType, contactInfoType];

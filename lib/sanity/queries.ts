@@ -1,6 +1,6 @@
 import { unstable_cache } from 'next/cache'
 import { sanityServerClient } from './client'
-import type { Show } from '@/types/sanity'
+import type { Show, ContactInfo } from '@/types/sanity'
 
 const REVALIDATE_INTERVAL = 60 // 1 minute
 
@@ -175,3 +175,27 @@ export const getShowBySlug = (slug: string) =>
     [`getShowBySlug-${slug}`],
     { revalidate: REVALIDATE_INTERVAL, tags: ['shows', `show-${slug}`] }
   )()
+
+// Fetch contact info (singleton document)
+export const getContactInfo = unstable_cache(
+  async (): Promise<ContactInfo | null> => {
+    const query = `*[_type == "contactInfo"][0] {
+      phone,
+      email,
+      location,
+      instagramUrl,
+      twitterUrl,
+      facebookUrl
+    }`
+
+    try {
+      const contactInfo = await sanityServerClient.fetch<ContactInfo | null>(query)
+      return contactInfo
+    } catch (error) {
+      console.error('Error fetching contact info:', error)
+      return null
+    }
+  },
+  ['getContactInfo'],
+  { revalidate: REVALIDATE_INTERVAL, tags: ['contact-info'] }
+)
