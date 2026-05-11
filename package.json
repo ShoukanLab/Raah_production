@@ -11,6 +11,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@portabletext/react": "^6.2.0",
     "@sanity/client": "^6.15.0",
     "@sanity/image-url": "^1.0.2",
     "@stripe/stripe-js": "^9.4.0",
