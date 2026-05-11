@@ -6,4 +6,5 @@ export {
   getPastShows,
   getFeaturedShow,
   getShowBySlug,
+  getContactInfo,
 } from './queries'
