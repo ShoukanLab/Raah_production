@@ -58,6 +58,12 @@ export const showType = defineType({
       options: { collapsible: true, collapsed: false },
     }),
     defineField({
+      name: "ticketUrl",
+      title: "Ticket URL",
+      type: "url",
+      description: "Link to the third-party ticket sales page (e.g. Eventbrite, Ticketmaster)",
+    }),
+    defineField({
       name: "genre",
       title: "Genre",
       type: "string",
