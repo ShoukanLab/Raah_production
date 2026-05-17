@@ -40,6 +40,7 @@ export interface Show {
   lineup?: LineupItem[];
   supabaseShowId?: string;
   featured: boolean;
+  ticketUrl?: string;
 }
 
 // Minimal PortableText block type
