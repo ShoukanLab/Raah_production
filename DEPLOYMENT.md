@@ -13,39 +13,47 @@
 1. Go to [vercel.com/dashboard](https://vercel.com/dashboard)
 2. Click **"Add New..."** → **"Project"**
 3. Import the GitHub repository: `Website-building-business/Raah_production`
-4. Accept default Next.js settings (Vercel auto-detects)
-5. Click **"Deploy"**
+4. Set **Framework Preset**: Next.js (auto-detected)
+5. Set **Root Directory**: `/` (default)
+6. Set **Production Branch**: `main`
+7. Click **"Deploy"**
 
 Once deployed, Vercel will give you a default URL like `raah-production-3w4h.vercel.app`
+
+### Enable Preview Deployments for `dev`
+
+After initial deploy:
+1. Go to **Settings → Git**
+2. Under **Preview Branches**, ensure `dev` is included (Vercel previews all branches by default)
+3. Confirm by pushing any commit to `dev` — a preview URL should appear in the GitHub PR/branch status
 
 ---
 
 ## Step 2: Add Environment Variables in Vercel Dashboard
 
-After project is created, go to **Settings → Environment Variables** and add these for **Production** environment:
+After project is created, go to **Settings → Environment Variables** and add these variables:
 
-### Public Variables (visible in browser)
+### Public Variables (all environments: Production, Preview, Development)
 ```
-NEXT_PUBLIC_SANITY_PROJECT_ID          = [your value]
+NEXT_PUBLIC_SANITY_PROJECT_ID          = [your Sanity project ID]
 NEXT_PUBLIC_SANITY_DATASET             = production
 NEXT_PUBLIC_SANITY_API_VERSION         = 2024-01-01
-NEXT_PUBLIC_SUPABASE_URL               = [your value]
-NEXT_PUBLIC_SUPABASE_ANON_KEY          = [your value]
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY     = [your value]
+NEXT_PUBLIC_SUPABASE_URL               = [your Supabase project URL]
+NEXT_PUBLIC_SUPABASE_ANON_KEY          = [your Supabase anon key]
 NEXT_PUBLIC_APP_URL                    = https://raahproduction.ca
 ```
 
-### Secret Variables (server-only)
+### Secret Variables (Production and Preview only — do NOT add to Development)
 ```
-SUPABASE_SERVICE_ROLE_KEY              = [your value]
-STRIPE_SECRET_KEY                      = [your value]
-STRIPE_WEBHOOK_SECRET                  = [your value]
-RESEND_API_KEY                         = [your value]
+SUPABASE_SERVICE_ROLE_KEY              = [your Supabase service role key]
+SANITY_API_TOKEN                       = [your Sanity API token with read access]
+RESEND_API_KEY                         = [your Resend API key]
 RESEND_FROM_EMAIL                      = tickets@raah.production
 RESEND_FROM_NAME                       = Raah Production
 CONTACT_TO_EMAIL                       = hello@raahproduction.ca
-SANITY_API_TOKEN                       = [your value]
 ```
+
+**Important**: For server-only variables, set scope to **Production and Preview** (exclude Development).
 
 **Save and redeploy** after adding all variables.
 
@@ -63,17 +71,7 @@ In Vercel dashboard:
 
 ---
 
-## Step 4: Update Stripe Webhook URL
-
-1. Go to [Stripe Dashboard](https://dashboard.stripe.com)
-2. Navigate to **Webhooks** (under Developers)
-3. Find your existing webhook for checkout events
-4. Edit the endpoint URL to: `https://raahproduction.ca/api/webhooks/stripe`
-5. **Keep the webhook signing secret** — it goes in `STRIPE_WEBHOOK_SECRET` above
-
----
-
-## Step 5: Update Sanity CORS Origins
+## Step 4: Update Sanity CORS Origins
 
 1. Go to [Sanity Studio](https://sanity.io/manage)
 2. Select your Raah Production project
@@ -83,71 +81,75 @@ In Vercel dashboard:
 
 ---
 
-## Step 6: Test Full Purchase Flow
+## Step 5: Configure Supabase Allowed Redirect URLs
+
+1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
+2. Select your Raah Production project
+3. Go to **Authentication → URL Configuration**
+4. Add redirect URL: `https://raahproduction.ca`
+5. Add redirect URL for previews: `https://*.vercel.app`
+
+---
+
+## Step 6: Verify Deployment
 
 ### Quick Smoke Test (2 min)
 
 1. Visit `https://raahproduction.ca` (or your Vercel preview URL)
-2. Navigate to a show page
-3. Click "Reserve Tickets"
-4. Complete a test Stripe payment (use Stripe test card: `4242 4242 4242 4242`)
-5. Verify you land on success page with order details
-6. Check your email for confirmation email from Resend
+2. Verify home page loads with real Sanity show data
+3. Navigate to a show detail page
+4. Verify "Get Tickets" button appears and links to external ticketing platform
+5. Try the contact form — confirm email functionality
 
 ### Verification Checks
 
-**Email received?**
-- ✅ Confirmation email should arrive within 30 seconds
-- ✅ Email shows correct show name, date, venue
-- ✅ Order reference number matches Vercel logs
+**Show data loading?**
+- ✅ Home page displays upcoming shows from Sanity
+- ✅ Show detail page renders show name, date, venue, lineup, poster
+- ✅ "Get Tickets" button appears when `ticketUrl` is set in Sanity
+- ✅ Button opens external URL in new tab
 
-**Stripe webhook fired?**
-- Go to Stripe Dashboard → **Webhooks** → click your endpoint
-- Look for recent `checkout.session.completed` event with `200` status
-- Click event to see full payload
-
-**Supabase order created?**
-- Go to [Supabase Dashboard](https://supabase.com/dashboard)
-- Check `orders` table — should see new row with `status: 'paid'`
-- Check `customers` table — should see new customer record
-- Check `order_items` table — should see ticket details
+**Contact form?**
+- ✅ Submit contact form via `/contact`
+- ✅ Confirmation email arrives within 30 seconds
+- ✅ Email shows submitted contact info
 
 ---
 
 ## Troubleshooting
 
-### Email not received
+### Contact email not received
 - Check RESEND_API_KEY is set in Vercel (not expired)
 - Check RESEND_FROM_EMAIL matches your Resend sender domain
-- Look at Vercel logs: `vercel logs` command or dashboard logs
+- Look at Vercel logs: **Deployments → click a deployment → Logs** in Vercel dashboard
 
-### Stripe webhook not firing
-- Verify webhook endpoint URL in Stripe Dashboard: `https://raahproduction.ca/api/webhooks/stripe`
-- Verify STRIPE_WEBHOOK_SECRET is correct
-- Check Stripe Dashboard → Webhooks → Event Log for errors
-
-### Show details not loading
+### Show data not loading
 - Verify NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET are correct
 - Verify Sanity CORS origins include `https://raahproduction.ca`
-- Check Sanity has live published shows
+- Check Sanity Studio — confirm shows are published (not draft)
 
-### Stripe payment fails
-- Verify NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is correct (matches STRIPE_SECRET_KEY environment)
-- Verify ticket inventory has quantity > 0 in Supabase
+### "Get Tickets" button not appearing
+- Check that the show document in Sanity has a `ticketUrl` value set
+- Draft shows will use the preview URL — ensure you're checking the right environment
+
+### Build fails on Vercel
+- Check Vercel function logs for missing environment variables
+- Ensure all `NEXT_PUBLIC_*` variables are set on all environments
+- Run `npm run build` locally with the same env values to reproduce
 
 ---
 
 ## Post-Deployment Checklist
 
-- [ ] Domain resolves to Vercel (ping `raahproduction.ca`)
-- [ ] Test purchase completes successfully
-- [ ] Confirmation email received
-- [ ] Stripe webhook shows `200` status in Stripe Dashboard
-- [ ] Order appears in Supabase dashboard
-- [ ] Sanity CMS is accessible
+- [ ] Domain resolves to Vercel (`raahproduction.ca` loads)
+- [ ] Home page shows real Sanity show data (not empty)
+- [ ] Show detail page loads with full event info
+- [ ] "Get Tickets" button appears on shows with a `ticketUrl` set in Sanity
+- [ ] "Get Tickets" button opens external URL in a new tab
+- [ ] Contact form submits and sends email
+- [ ] Sanity CMS is accessible at `/studio`
 - [ ] All pages load without 500 errors
-- [ ] Links navigate correctly
-- [ ] Form submissions work (contact form, etc.)
+- [ ] `dev` branch push triggers a Vercel preview deployment
 
 ---
 
@@ -168,5 +170,5 @@ If something breaks after deployment:
 ## Need Help?
 
 - **Vercel docs**: https://vercel.com/docs
-- **Stripe webhook testing**: https://stripe.com/docs/webhooks/test
-- **Sanity CORS**: https://www.sanity.io/docs/cors
+- **Sanity CORS docs**: https://www.sanity.io/docs/cors
+- **Supabase URL configuration**: https://supabase.com/docs/guides/auth/redirect-urls
