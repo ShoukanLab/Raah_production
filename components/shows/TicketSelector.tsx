@@ -148,11 +148,11 @@ export function TicketSelector({ ticketTypes, showSlug }: TicketSelectorProps) {
         <div className="space-y-1 py-4 border-t border-charcoal">
           <div className="flex justify-between text-sm font-montserrat text-t2">
             <span>Per Ticket</span>
-            <span>${((selectedType?.price as number) / 100).toFixed(2)}</span>
+            <span>${(selectedType?.price as number).toFixed(2)}</span>
           </div>
           <div className="flex justify-between font-playfair text-xl text-gold">
             <span>Total</span>
-            <span>${(totalPrice / 100).toFixed(2)}</span>
+            <span>${(totalPrice).toFixed(2)}</span>
           </div>
         </div>
       )}

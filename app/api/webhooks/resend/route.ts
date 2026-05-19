@@ -6,6 +6,17 @@ export const dynamic = "force-dynamic";
 // Configure the webhook URL in your Resend dashboard → Webhooks.
 
 export async function POST(req: NextRequest) {
+  // Verify webhook secret
+  const secret = process.env.RESEND_WEBHOOK_SECRET;
+  if (!secret) {
+    return NextResponse.json({ error: "Webhook secret not configured" }, { status: 500 });
+  }
+
+  const authHeader = req.headers.get("x-resend-secret");
+  if (authHeader !== secret) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   let payload: unknown;
   try {
     payload = await req.json();

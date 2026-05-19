@@ -112,9 +112,16 @@ export async function POST(req: NextRequest): Promise<NextResponse<CheckoutRespo
       );
     }
 
+    if (!session.url) {
+      return NextResponse.json(
+        { success: false, error: 'Stripe did not return a checkout URL' },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json({
       success: true,
-      data: { url: session.url || '' },
+      data: { url: session.url },
     });
   } catch (error) {
     console.error('Checkout error:', error);

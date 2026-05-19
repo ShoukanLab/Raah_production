@@ -8,14 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "sanity": "sanity dev",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@portabletext/react": "^6.2.0",
     "@react-email/components": "^1.0.12",
-    "@sanity/client": "^6.15.0",
+    "@sanity/client": "^7.6.0",
     "@sanity/image-url": "^1.0.2",
-    "@stripe/stripe-js": "^9.4.0",
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.105.1",
     "classnames": "^2.5.1",
@@ -24,7 +24,7 @@
     "react": "^18",
     "react-dom": "^18",
     "resend": "^3.2.0",
-    "sanity": "^3.40.0",
+    "sanity": "^3.99.0",
     "stripe": "^15.7.0"
   },
   "devDependencies": {
@@ -36,6 +36,7 @@
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^1.6.0"
   }
 }

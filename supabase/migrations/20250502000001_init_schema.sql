@@ -1,6 +1,5 @@
 -- Enable necessary extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "vector";
 
 -- Shows table
 CREATE TABLE shows (
@@ -121,12 +120,7 @@ RETURNS TABLE (
 ) AS $$
 BEGIN
   RETURN QUERY
-  WITH check_available AS (
-    SELECT (quantity_total - quantity_sold) AS available
-    FROM ticket_types
-    WHERE id = p_ticket_type_id
-  ),
-  do_update AS (
+  WITH do_update AS (
     UPDATE ticket_types
     SET quantity_sold = quantity_sold + p_requested_quantity
     WHERE id = p_ticket_type_id
