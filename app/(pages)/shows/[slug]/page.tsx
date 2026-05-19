@@ -4,14 +4,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { getAllShows, getShowBySlug } from '@/lib/sanity'
-import { getTicketTypes } from '@/lib/supabase/inventory'
 import { urlFor } from '@/lib/sanity/image'
-import { TicketSelector } from '@/components/shows/TicketSelector'
+import { ExternalTicketButton } from '@/components/shows/ExternalTicketButton'
 import { ShowAddToCalendar } from '@/components/shows/ShowAddToCalendar'
 import { EyebrowLabel } from '@/components/ui/EyebrowLabel'
 import { Tag } from '@/components/ui/Tag'
 import type { PortableTextBlock } from '@/types/sanity'
-import type { TicketTypeWithAvailability } from '@/lib/supabase/inventory'
 
 export const revalidate = 60
 
@@ -68,15 +66,6 @@ export default async function ShowPage({ params }: PageProps) {
 
   if (!show) {
     notFound()
-  }
-
-  let ticketTypes: TicketTypeWithAvailability[] = []
-  if (show.supabaseShowId) {
-    try {
-      ticketTypes = await getTicketTypes(show.supabaseShowId)
-    } catch {
-      // Fail silently — show the page without tickets
-    }
   }
 
   return (
@@ -209,17 +198,7 @@ export default async function ShowPage({ params }: PageProps) {
       {/* Ticket Section */}
       <section className="px-6 py-8">
         <div className="max-w-2xl mx-auto">
-          <EyebrowLabel>Tickets</EyebrowLabel>
-
-          {ticketTypes.length > 0 ? (
-            <div className="mt-6 bg-onyx border border-gold/20 rounded-sm p-6">
-              <TicketSelector ticketTypes={ticketTypes} showSlug={show.slug.current} />
-            </div>
-          ) : (
-            <div className="mt-6 bg-onyx border border-charcoal rounded-sm p-6 text-center">
-              <p className="font-montserrat text-sm text-champagne/60">Tickets not yet available</p>
-            </div>
-          )}
+          <ExternalTicketButton ticketUrl={show.ticketUrl} />
         </div>
       </section>
 

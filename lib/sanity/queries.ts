@@ -23,7 +23,8 @@ export const getAllShows = unstable_cache(
       poster,
       lineup,
       supabaseShowId,
-      featured
+      featured,
+      ticketUrl
     }`
 
     try {
@@ -58,7 +59,8 @@ export const getUpcomingShows = unstable_cache(
       poster,
       lineup,
       supabaseShowId,
-      featured
+      featured,
+      ticketUrl
     }`
 
     try {
@@ -92,7 +94,8 @@ export const getPastShows = unstable_cache(
       poster,
       lineup,
       supabaseShowId,
-      featured
+      featured,
+      ticketUrl
     }`
 
     try {
@@ -126,7 +129,8 @@ export const getFeaturedShow = unstable_cache(
       poster,
       lineup,
       supabaseShowId,
-      featured
+      featured,
+      ticketUrl
     }`
 
     try {
