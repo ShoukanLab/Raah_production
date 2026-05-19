@@ -40,6 +40,7 @@ export interface Show {
   lineup?: LineupItem[];
   supabaseShowId?: string;
   featured: boolean;
+  ticketUrl?: string;
 }
 
 // Minimal PortableText block type
@@ -49,4 +50,14 @@ export interface PortableTextBlock {
   style?: string;
   children: Array<{ _key: string; _type: "span"; text: string; marks?: string[] }>;
   markDefs?: Array<{ _key: string; _type: string; href?: string }>;
+}
+
+// Contact info document (singleton)
+export interface ContactInfo {
+  phone?: string;
+  email?: string;
+  location?: string;
+  instagramUrl?: string;
+  twitterUrl?: string;
+  facebookUrl?: string;
 }
