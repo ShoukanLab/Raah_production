@@ -14,6 +14,9 @@ const config: Config = {
         charcoal: "#1A1A1A",
         gold: "#C9A96E",
         champagne: "#E8D5B0",
+        t2: "#888888",
+        t3: "#555555",
+        t4: "#333333",
       },
       fontFamily: {
         pinyon: ["var(--font-pinyon)", "cursive"],

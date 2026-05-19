@@ -14,7 +14,7 @@ import type { PortableTextBlock } from '@/types/sanity'
 export const revalidate = 60
 
 interface PageProps {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }
 
 export async function generateStaticParams() {
@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params
+  const { slug } = params
   const show = await getShowBySlug(slug)
 
   if (!show) {
@@ -61,7 +61,7 @@ function formatTime(timeString: string | undefined): string {
 }
 
 export default async function ShowPage({ params }: PageProps) {
-  const { slug } = await params
+  const { slug } = params
   const show = await getShowBySlug(slug)
 
   if (!show) {
