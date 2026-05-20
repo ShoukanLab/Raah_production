@@ -12,7 +12,7 @@ export default async function ContactPage() {
   const phone = contactInfo?.phone ?? '+1 (825) 965-9855';
   const email = contactInfo?.email ?? 'raahprod@gmail.com';
   const location = contactInfo?.location ?? 'Edmonton, Alberta';
-  const instagramUrl = contactInfo?.instagramUrl ?? '#';
+  const instagramUrl = contactInfo?.instagramUrl ?? 'https://www.instagram.com/raah.production?igsh=N3ZuajdiNmpocXEz';
   const twitterUrl = contactInfo?.twitterUrl ?? '#';
   const facebookUrl = contactInfo?.facebookUrl ?? '#';
   const websiteUrl = contactInfo?.websiteUrl ?? '#';
