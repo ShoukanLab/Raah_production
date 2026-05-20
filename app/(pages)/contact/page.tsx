@@ -74,7 +74,7 @@ export default async function ContactPage() {
             <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.18em] text-t3 mb-1">
               Email
             </p>
-            <p className="font-montserrat text-sm text-white font-medium">{email}</p>
+            <p className="font-montserrat text-sm text-white font-medium break-words">{email}</p>
           </div>
         </div>
 
