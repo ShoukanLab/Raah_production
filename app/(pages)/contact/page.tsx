@@ -116,36 +116,7 @@ export default async function ContactPage() {
         </div>
       </section>
 
-      {/* Office Hours / Press & Media Section */}
-      <section className="px-6 py-6 grid grid-cols-2 gap-3 max-w-2xl mx-auto">
-        {/* Office Hours */}
-        <div className="bg-onyx border border-charcoal rounded-lg p-4">
-          <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.18em] text-t3 mb-3">
-            Office Hours
-          </p>
-          <p className="font-montserrat text-sm text-white font-medium mb-1">
-            Mon – Fri · 10 am – 6 pm
-          </p>
-          <p className="font-montserrat text-xs text-t2">
-            Mountain Time (MT)
-          </p>
-        </div>
-
-        {/* Press & Media */}
-        <div className="bg-onyx border border-charcoal rounded-lg p-4">
-          <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.18em] text-t3 mb-3">
-            Press & Media
-          </p>
-          <p className="font-montserrat text-sm text-white font-medium mb-1">
-            press@raah.co
-          </p>
-          <p className="font-montserrat text-xs text-t2">
-            Same-day response
-          </p>
-        </div>
-      </section>
-
-      {/* Social Links */}
+{/* Social Links */}
       <section className="px-6 py-6 max-w-2xl mx-auto">
         <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.2em] text-t3 text-center mb-4">
           Follow Raah Production
