@@ -13,9 +13,6 @@ export default async function ContactPage() {
   const email = contactInfo?.email ?? 'raahprod@gmail.com';
   const location = contactInfo?.location ?? 'Edmonton, Alberta';
   const instagramUrl = contactInfo?.instagramUrl ?? 'https://www.instagram.com/raah.production?igsh=N3ZuajdiNmpocXEz';
-  const twitterUrl = contactInfo?.twitterUrl ?? '#';
-  const facebookUrl = contactInfo?.facebookUrl ?? '#';
-  const websiteUrl = contactInfo?.websiteUrl ?? '#';
 
   return (
     <main className="bg-void pb-24">
@@ -153,7 +150,7 @@ export default async function ContactPage() {
         <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.2em] text-t3 text-center mb-4">
           Follow Raah Production
         </p>
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center">
           {/* Instagram */}
           <a
             href={instagramUrl}
@@ -174,71 +171,6 @@ export default async function ContactPage() {
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
               <circle cx="17.5" cy="6.5" r="1.5" />
-            </svg>
-          </a>
-
-          {/* Twitter/X */}
-          <a
-            href={twitterUrl}
-            {...linkProps(twitterUrl)}
-            className="w-10 h-10 rounded-full border border-charcoal flex items-center justify-center text-t2 hover:border-gold/30 hover:text-gold transition-colors"
-            aria-label="X / Twitter"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2s9 5 20 5a9.5 9.5 0 0 0-9-5.5c4.75 2.25 7-7 7-11.667z" />
-            </svg>
-          </a>
-
-          {/* Facebook */}
-          <a
-            href={facebookUrl}
-            {...linkProps(facebookUrl)}
-            className="w-10 h-10 rounded-full border border-charcoal flex items-center justify-center text-t2 hover:border-gold/30 hover:text-gold transition-colors"
-            aria-label="Facebook"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 2h-3a6 6 0 0 0-6 6v4a6 6 0 0 0 6 6h3m0-11v5m-6-5v5" />
-            </svg>
-          </a>
-
-          {/* Website/Globe */}
-          <a
-            href={websiteUrl}
-            {...linkProps(websiteUrl)}
-            className="w-10 h-10 rounded-full border border-charcoal flex items-center justify-center text-t2 hover:border-gold/30 hover:text-gold transition-colors"
-            aria-label="Website"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="2" y1="12" x2="22" y2="12" />
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
             </svg>
           </a>
         </div>
