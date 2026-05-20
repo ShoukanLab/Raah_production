@@ -1,24 +1,89 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+
+interface MenuItem {
+  label: string
+  href: string
+  number: string
+}
+
+const menuItems: MenuItem[] = [
+  { label: 'Shows', href: '/', number: '01' },
+  { label: 'Schedule', href: '/schedule', number: '02' },
+  { label: 'About', href: '/about', number: '03' },
+  { label: 'Contact', href: '/contact', number: '04' },
+]
 
 export function Nav() {
   const router = useRouter()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isMenuOpen])
+
+  const handleMenuItemClick = (href: string) => {
+    setIsMenuOpen(false)
+    router.push(href)
+  }
 
   return (
-    <nav className="sticky top-0 z-10 flex items-center justify-between bg-void/96 px-6 py-3.5 backdrop-blur-lg border-b border-charcoal">
-      <div className="flex flex-col items-start">
-        <div className="font-pinyon text-2xl text-white leading-none">Raah</div>
-        <div className="text-xs font-bold tracking-widest uppercase text-gray-600">Production</div>
-      </div>
+    <>
+      <nav className="sticky top-0 z-50 flex items-center justify-between bg-void/96 px-6 py-3.5 backdrop-blur-lg border-b border-charcoal">
+        <button
+          onClick={() => router.push('/')}
+          className="flex flex-col items-start hover:opacity-80 transition-opacity"
+          aria-label="Home"
+        >
+          <div className="font-pinyon text-2xl text-white leading-none">Raah</div>
+          <div className="font-montserrat text-xs font-bold tracking-widest uppercase text-gold">Production</div>
+        </button>
 
-      <button
-        onClick={() => router.push('/contact')}
-        className="text-xs font-bold tracking-wider uppercase border border-gold/35 px-4 py-2.5 rounded-sm text-gold hover:border-gold/50 transition-colors"
-        aria-label="Contact"
-      >
-        Contact
-      </button>
-    </nav>
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="flex items-center justify-center w-8 h-8 text-white hover:text-gold transition-colors"
+          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+        >
+          {isMenuOpen ? (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          ) : (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          )}
+        </button>
+      </nav>
+
+      {isMenuOpen && (
+        <div className="fixed inset-0 top-0 z-40 bg-void overflow-y-auto pt-20">
+          <div className="px-6 py-8">
+            {menuItems.map((item, index) => (
+              <button
+                key={item.href}
+                onClick={() => handleMenuItemClick(item.href)}
+                className="w-full py-8 border-b border-charcoal hover:opacity-80 transition-opacity text-left"
+              >
+                <span className="font-playfair text-4xl text-white">{item.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   )
 }
