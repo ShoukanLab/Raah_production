@@ -76,7 +76,10 @@ export function Nav() {
               <button
                 key={item.href}
                 onClick={() => handleMenuItemClick(item.href)}
-                className="w-full py-8 border-b border-charcoal hover:opacity-80 transition-opacity text-left"
+                className="w-full py-8 border-b border-charcoal hover:opacity-80 transition-opacity text-left menu-item-enter"
+                style={{
+                  animationDelay: `${index * 0.1}s`,
+                }}
               >
                 <span className="font-playfair text-4xl text-white">{item.label}</span>
               </button>
