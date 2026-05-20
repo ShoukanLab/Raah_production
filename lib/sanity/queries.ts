@@ -189,7 +189,8 @@ export const getContactInfo = unstable_cache(
       location,
       instagramUrl,
       twitterUrl,
-      facebookUrl
+      facebookUrl,
+      websiteUrl
     }`
 
     try {
