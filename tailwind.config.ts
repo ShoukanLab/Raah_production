@@ -19,10 +19,10 @@ const config: Config = {
         t4: "#333333",
       },
       fontFamily: {
-        pinyon: ["var(--font-pinyon)", "cursive"],
-        playfair: ["var(--font-playfair)", "serif"],
-        cormorant: ["var(--font-cormorant)", "serif"],
-        montserrat: ["var(--font-montserrat)", "sans-serif"],
+        pinyon: ["Pinyon Script", "cursive"],
+        playfair: ["Playfair Display", "serif"],
+        cormorant: ["Cormorant Garamond", "serif"],
+        montserrat: ["Montserrat", "sans-serif"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
