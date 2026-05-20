@@ -11,9 +11,9 @@ const linkProps = (url: string) =>
 export default async function ContactPage() {
   const contactInfo = await getContactInfo();
 
-  const phone = contactInfo?.phone ?? '+1 (416) 555-0192';
-  const email = contactInfo?.email ?? 'hello@raahproduction.ca';
-  const location = contactInfo?.location ?? 'Toronto, Ontario';
+  const phone = contactInfo?.phone ?? '+1 (825) 965-9855';
+  const email = contactInfo?.email ?? 'raahprod@gmail.com';
+  const location = contactInfo?.location ?? 'Edmonton, Alberta';
   const instagramUrl = contactInfo?.instagramUrl ?? '#';
   const twitterUrl = contactInfo?.twitterUrl ?? '#';
   const facebookUrl = contactInfo?.facebookUrl ?? '#';
