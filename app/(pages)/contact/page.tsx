@@ -1,6 +1,4 @@
 import { ContactForm } from '@/components/forms/ContactForm';
-import { WaveLine } from '@/components/ui/WaveLine';
-import { EyebrowLabel } from '@/components/ui/EyebrowLabel';
 import { getContactInfo } from '@/lib/sanity';
 
 export const metadata = { title: 'Contact' };
@@ -21,24 +19,21 @@ export default async function ContactPage() {
   return (
     <main className="bg-void pb-24">
       {/* Hero Section */}
-      <section className="px-6 py-12 max-w-2xl mx-auto">
-        <EyebrowLabel>Get in Touch</EyebrowLabel>
-        <h1 className="font-playfair italic text-4xl text-white mt-4 leading-tight">
-          Let's Make<br />Something<br />Unforgettable
+      <section className="px-6 pt-16 pb-8 max-w-2xl mx-auto text-center">
+        <h1 className="font-playfair text-4xl text-white leading-tight">
+          Let's make something<br />
+          <span className="italic text-gold">unforgettable.</span>
         </h1>
-        <div className="mt-4 w-24">
-          <WaveLine />
-        </div>
-        <p className="font-montserrat text-sm text-champagne/60 mt-4 leading-relaxed">
-          Reach out to book our production services, inquire about upcoming shows, or collaborate on your next event.
+        <p className="font-montserrat text-sm text-t2 mt-4 leading-relaxed">
+          Bookings, press, and collaborations — start a conversation below.
         </p>
       </section>
 
-      {/* Info Cards */}
-      <section className="px-6 py-4 flex flex-col gap-3 max-w-2xl mx-auto">
+      {/* Contact Info Cards (3-column grid) */}
+      <section className="px-6 py-4 grid grid-cols-3 gap-3 max-w-2xl mx-auto">
         {/* Phone */}
-        <div className="flex items-center gap-4 bg-onyx border border-charcoal rounded-[6px] px-[18px] py-4">
-          <div className="w-9 h-9 rounded-[4px] bg-gold/[0.08] border border-gold/15 flex items-center justify-center flex-shrink-0 text-gold">
+        <div className="bg-onyx border border-charcoal rounded-lg p-4 flex flex-col items-center text-center gap-3">
+          <div className="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center text-gold">
             <svg
               width="20"
               height="20"
@@ -53,7 +48,7 @@ export default async function ContactPage() {
             </svg>
           </div>
           <div>
-            <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.18em] text-t4 mb-1">
+            <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.18em] text-t3 mb-1">
               Phone
             </p>
             <p className="font-montserrat text-sm text-white font-medium">{phone}</p>
@@ -61,8 +56,8 @@ export default async function ContactPage() {
         </div>
 
         {/* Email */}
-        <div className="flex items-center gap-4 bg-onyx border border-charcoal rounded-[6px] px-[18px] py-4">
-          <div className="w-9 h-9 rounded-[4px] bg-gold/[0.08] border border-gold/15 flex items-center justify-center flex-shrink-0 text-gold">
+        <div className="bg-onyx border border-charcoal rounded-lg p-4 flex flex-col items-center text-center gap-3">
+          <div className="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center text-gold">
             <svg
               width="20"
               height="20"
@@ -78,16 +73,16 @@ export default async function ContactPage() {
             </svg>
           </div>
           <div>
-            <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.18em] text-t4 mb-1">
+            <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.18em] text-t3 mb-1">
               Email
             </p>
-            <p className="font-montserrat text-sm text-white font-medium">{email}</p>
+            <p className="font-montserrat text-sm text-white font-medium break-words">{email}</p>
           </div>
         </div>
 
-        {/* Location */}
-        <div className="flex items-center gap-4 bg-onyx border border-charcoal rounded-[6px] px-[18px] py-4">
-          <div className="w-9 h-9 rounded-[4px] bg-gold/[0.08] border border-gold/15 flex items-center justify-center flex-shrink-0 text-gold">
+        {/* Studio */}
+        <div className="bg-onyx border border-charcoal rounded-lg p-4 flex flex-col items-center text-center gap-3">
+          <div className="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center text-gold">
             <svg
               width="20"
               height="20"
@@ -103,32 +98,38 @@ export default async function ContactPage() {
             </svg>
           </div>
           <div>
-            <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.18em] text-t4 mb-1">
-              Based In
+            <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.18em] text-t3 mb-1">
+              Studio
             </p>
             <p className="font-montserrat text-sm text-white font-medium">{location}</p>
           </div>
         </div>
       </section>
 
-      {/* Contact Form Section */}
+      {/* Contact Form Section (Card) */}
       <section className="px-6 py-6 max-w-2xl mx-auto">
-        <p className="font-playfair text-lg text-white mb-1">Send a Message</p>
-        <p className="font-montserrat text-xs text-t3 mb-6">We typically respond within 24 hours.</p>
-        <ContactForm />
+        <div className="bg-onyx border border-charcoal rounded-xl p-6">
+          <h2 className="font-playfair text-2xl text-white mb-2">Send a Message</h2>
+          <div className="flex items-center gap-2 mb-6">
+            <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
+            <p className="font-montserrat text-xs text-t2">Typically replies within 24 hours</p>
+          </div>
+          <ContactForm />
+        </div>
       </section>
 
-      {/* Social Links */}
+{/* Social Links */}
       <section className="px-6 py-6 max-w-2xl mx-auto">
-        <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.2em] text-t4 mb-3">
+        <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.2em] text-t3 text-center mb-4">
           Follow Raah Production
         </p>
-        <div className="flex gap-2.5">
+        <div className="flex justify-center">
           {/* Instagram */}
           <a
             href={instagramUrl}
             {...linkProps(instagramUrl)}
-            className="flex-1 flex items-center justify-center gap-2 bg-onyx border border-charcoal rounded-[4px] py-3.5 hover:border-gold/30 transition-colors"
+            className="w-10 h-10 rounded-full border border-charcoal flex items-center justify-center text-t2 hover:border-gold/30 hover:text-gold transition-colors"
+            aria-label="Instagram"
           >
             <svg
               width="18"
@@ -139,63 +140,11 @@ export default async function ContactPage() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-t2"
             >
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
               <circle cx="17.5" cy="6.5" r="1.5" />
             </svg>
-            <span className="font-montserrat text-[11px] font-semibold tracking-[0.1em] text-t2">
-              Instagram
-            </span>
-          </a>
-
-          {/* Twitter/X */}
-          <a
-            href={twitterUrl}
-            {...linkProps(twitterUrl)}
-            className="flex-1 flex items-center justify-center gap-2 bg-onyx border border-charcoal rounded-[4px] py-3.5 hover:border-gold/30 transition-colors"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-t2"
-            >
-              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2s9 5 20 5a9.5 9.5 0 0 0-9-5.5c4.75 2.25 7-7 7-11.667z" />
-            </svg>
-            <span className="font-montserrat text-[11px] font-semibold tracking-[0.1em] text-t2">
-              X / Twitter
-            </span>
-          </a>
-
-          {/* Facebook */}
-          <a
-            href={facebookUrl}
-            {...linkProps(facebookUrl)}
-            className="flex-1 flex items-center justify-center gap-2 bg-onyx border border-charcoal rounded-[4px] py-3.5 hover:border-gold/30 transition-colors"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-t2"
-            >
-              <path d="M18 2h-3a6 6 0 0 0-6 6v4a6 6 0 0 0 6 6h3m0-11v5m-6-5v5" />
-            </svg>
-            <span className="font-montserrat text-[11px] font-semibold tracking-[0.1em] text-t2">
-              Facebook
-            </span>
           </a>
         </div>
       </section>

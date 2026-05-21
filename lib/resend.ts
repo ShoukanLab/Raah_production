@@ -1,10 +1,8 @@
 import { Resend } from "resend";
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error("Missing RESEND_API_KEY");
-}
-
-export const resend = new Resend(process.env.RESEND_API_KEY);
+// Note: RESEND_API_KEY is optional during development
+// The contact form will fail at runtime if Resend is not configured
+export const resend = new Resend(process.env.RESEND_API_KEY || "");
 
 export const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "tickets@raah.production";
 export const FROM_NAME = process.env.RESEND_FROM_NAME ?? "Raah Production";
