@@ -1,4 +1,4 @@
-export { sanityClient, sanityServerClient, sanityFetch } from './client'
+export { sanityClient, getSanityServerClient, sanityFetch } from './client'
 export { urlFor } from './image'
 export {
   getAllShows,

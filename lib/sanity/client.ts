@@ -1,4 +1,4 @@
-import { createClient } from '@sanity/client'
+import { createClient, type SanityClient } from '@sanity/client'
 import { projectId, dataset, apiVersion, token } from '@/sanity/env'
 
 export const sanityClient = createClient({
@@ -9,23 +9,27 @@ export const sanityClient = createClient({
   perspective: 'published',
 })
 
-export const sanityServerClient = (() => {
+let _serverClient: SanityClient | undefined
+
+export function getSanityServerClient(): SanityClient {
+  if (_serverClient) return _serverClient
   if (!token) {
     throw new Error('SANITY_API_TOKEN is required for server-side operations')
   }
-  return createClient({
+  _serverClient = createClient({
     projectId,
     dataset,
     apiVersion,
     useCdn: false,
     token,
-    perspective: 'previewDrafts',
+    perspective: 'drafts',
   })
-})()
+  return _serverClient
+}
 
 export async function sanityFetch<T>(
   query: string,
   params: Record<string, unknown> = {}
 ): Promise<T> {
-  return sanityServerClient.fetch<T>(query, params)
+  return getSanityServerClient().fetch<T>(query, params)
 }

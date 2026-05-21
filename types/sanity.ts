@@ -60,5 +60,4 @@ export interface ContactInfo {
   instagramUrl?: string;
   twitterUrl?: string;
   facebookUrl?: string;
-  websiteUrl?: string;
 }

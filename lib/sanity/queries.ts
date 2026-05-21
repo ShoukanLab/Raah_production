@@ -1,5 +1,5 @@
 import { unstable_cache } from 'next/cache'
-import { sanityServerClient } from './client'
+import { getSanityServerClient } from './client'
 import type { Show, ContactInfo } from '@/types/sanity'
 
 const REVALIDATE_INTERVAL = 60 // 1 minute
@@ -28,7 +28,7 @@ export const getAllShows = unstable_cache(
     }`
 
     try {
-      const shows = await sanityServerClient.fetch<Show[]>(query)
+      const shows = await getSanityServerClient().fetch<Show[]>(query)
       return shows
     } catch (error) {
       console.error('Error fetching all shows:', error)
@@ -64,7 +64,7 @@ export const getUpcomingShows = unstable_cache(
     }`
 
     try {
-      const shows = await sanityServerClient.fetch<Show[]>(query, { now })
+      const shows = await getSanityServerClient().fetch<Show[]>(query, { now })
       return shows
     } catch (error) {
       console.error('Error fetching upcoming shows:', error)
@@ -99,7 +99,7 @@ export const getPastShows = unstable_cache(
     }`
 
     try {
-      const shows = await sanityServerClient.fetch<Show[]>(query)
+      const shows = await getSanityServerClient().fetch<Show[]>(query)
       return shows
     } catch (error) {
       console.error('Error fetching past shows:', error)
@@ -134,7 +134,7 @@ export const getFeaturedShow = unstable_cache(
     }`
 
     try {
-      const show = await sanityServerClient.fetch<Show | null>(query)
+      const show = await getSanityServerClient().fetch<Show | null>(query)
       return show
     } catch (error) {
       console.error('Error fetching featured show:', error)
@@ -169,7 +169,7 @@ export const getShowBySlug = (slug: string) =>
       }`
 
       try {
-        const show = await sanityServerClient.fetch<Show | null>(query, { slug })
+        const show = await getSanityServerClient().fetch<Show | null>(query, { slug })
         return show
       } catch (error) {
         console.error(`Error fetching show with slug "${slug}":`, error)
@@ -194,7 +194,7 @@ export const getContactInfo = unstable_cache(
     }`
 
     try {
-      const contactInfo = await sanityServerClient.fetch<ContactInfo | null>(query)
+      const contactInfo = await getSanityServerClient().fetch<ContactInfo | null>(query)
       return contactInfo
     } catch (error) {
       console.error('Error fetching contact info:', error)
