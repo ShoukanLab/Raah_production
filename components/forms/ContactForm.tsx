@@ -114,7 +114,7 @@ export function ContactForm() {
       <div className="text-center py-12">
         <p className="font-playfair text-2xl text-champagne mb-3">Message Sent</p>
         <p className="font-montserrat text-sm text-champagne/60">
-          We'll be in touch within 24 hours.
+          We&apos;ll be in touch within 24 hours.
         </p>
       </div>
     );

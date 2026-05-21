@@ -19,7 +19,7 @@ export default async function ContactPage() {
       {/* Hero Section */}
       <section className="px-6 pt-16 pb-8 max-w-2xl mx-auto text-center">
         <h1 className="font-playfair text-4xl text-white leading-tight">
-          Let's make something<br />
+          Let&apos;s make something<br />
           <span className="italic text-gold">unforgettable.</span>
         </h1>
         <p className="font-montserrat text-sm text-t2 mt-4 leading-relaxed">
