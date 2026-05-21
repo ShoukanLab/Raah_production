@@ -87,7 +87,7 @@ function buildOrderConfirmationHtml(data: OrderConfirmationData): string {
 
 // ─── Contact form notifications ─────────────────────────────────────────────────
 
-export const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? FROM_EMAIL;
+export const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "raahprod@gmail.com";
 
 export interface ContactNotificationData {
   firstName: string;
