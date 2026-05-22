@@ -3,7 +3,11 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 
-export function AboutContent() {
+interface AboutContentProps {
+  showHero?: boolean;
+}
+
+export function AboutContent({ showHero = true }: AboutContentProps) {
   const revealRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
@@ -34,6 +38,7 @@ export function AboutContent() {
   return (
     <div className="bg-void">
       {/* HERO */}
+      {showHero && (
       <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 pb-20 relative overflow-hidden">
         <div
           className="absolute inset-0 pointer-events-none"
@@ -81,6 +86,7 @@ export function AboutContent() {
           </div>
         </div>
       </section>
+      )}
 
       {/* MANIFESTO */}
       <section className="max-w-4xl mx-auto px-6 py-24" ref={addReveal}>
