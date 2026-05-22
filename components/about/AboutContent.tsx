@@ -89,7 +89,7 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       )}
 
       {/* MANIFESTO */}
-      <section className="max-w-4xl mx-auto px-6 py-24" ref={addReveal}>
+      <section className="max-w-4xl mx-auto px-6 py-12" ref={addReveal}>
         <div className="mb-12">
           <h3 className="font-montserrat text-[9px] font-bold tracking-[0.35em] uppercase text-gold mb-8">
             Our Story
@@ -104,7 +104,7 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
               <span className="italic text-gold">sound.</span>
             </h2>
 
-            <div className="pl-6 mb-8 border-l border-gold/25 space-y-2">
+            <div className="pl-6 mb-4 border-l border-gold/25 space-y-2">
               <p className="font-cormorant text-lg italic text-t2 leading-relaxed">
                 It's the pause before the lights dim.
               </p>
@@ -119,7 +119,7 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               <p className="font-montserrat text-sm text-t3 leading-relaxed">
                 Raah Production was created with one intention: to build unforgettable live music experiences in
                 Edmonton. We believe every show is more than a performance — it's a shared moment between an artist and
@@ -137,7 +137,7 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
               What drives us
             </h4>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               {[
                 {
                   num: "01",
@@ -169,9 +169,9 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       </section>
 
       {/* STATEMENT BAND */}
-      <section className="bg-onyx border-y border-charcoal py-20 md:py-28 px-6 about-reveal" ref={addReveal}>
+      <section className="bg-onyx border-y border-charcoal py-12 md:py-16 px-6 about-reveal" ref={addReveal}>
         <div className="max-w-3xl mx-auto text-center">
-          <blockquote className="font-playfair italic text-[clamp(20px,3.5vw,36px)] text-white leading-relaxed mb-8">
+          <blockquote className="font-playfair italic text-[clamp(20px,3.5vw,36px)] text-white leading-relaxed mb-4">
             "This isn't just event production.
             <br />
             This is culture. This is community.
@@ -179,13 +179,13 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
             This is Raah."
           </blockquote>
 
-          <p className="font-montserrat text-[9px] font-bold tracking-[0.3em] uppercase text-t4 flex items-center justify-center gap-4 mb-12">
+          <p className="font-montserrat text-[9px] font-bold tracking-[0.3em] uppercase text-t4 flex items-center justify-center gap-4 mb-6">
             <span className="w-8 h-px bg-t4" />
             Raah Production • Edmonton
             <span className="w-8 h-px bg-t4" />
           </p>
 
-          <div className="flex flex-col md:flex-row justify-center gap-12 md:gap-16">
+          <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-12">
             {[
               { word: "Culture", sub: "Rooted in" },
               { word: "Community", sub: "Built for" },
@@ -203,12 +203,12 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       </section>
 
       {/* WHAT WE DO */}
-      <section className="max-w-4xl mx-auto px-6 py-24 about-reveal" ref={addReveal}>
+      <section className="max-w-4xl mx-auto px-6 py-12 about-reveal" ref={addReveal}>
         <h3 className="font-montserrat text-[9px] font-bold tracking-[0.35em] uppercase text-gold mb-8">
           What We Do
         </h3>
 
-        <h2 className="font-playfair text-[clamp(28px,4vw,44px)] font-normal text-white leading-tight max-w-2xl mb-12">
+        <h2 className="font-playfair text-[clamp(28px,4vw,44px)] font-normal text-white leading-tight max-w-2xl mb-8">
           Live music production,
           <span className="italic text-gold"> end to end.</span>
         </h2>
@@ -259,7 +259,7 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       </section>
 
       {/* CTA */}
-      <section className="max-w-4xl mx-auto px-6 py-20 md:py-28 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 about-reveal" ref={addReveal}>
+      <section className="max-w-4xl mx-auto px-6 py-12 md:py-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 about-reveal" ref={addReveal}>
         <div>
           <h2 className="font-playfair italic text-[clamp(24px,3.5vw,38px)] text-white leading-tight mb-3">
             Ready to experience
