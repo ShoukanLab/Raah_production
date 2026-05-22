@@ -61,7 +61,7 @@ export default async function HomePage() {
 
         {/* Featured Show Card */}
         {featured && (
-            <section className="px-6 pt-8 pb-14" aria-label="Featured Show">
+            <section id="shows" className="px-6 pt-8 pb-14" aria-label="Featured Show">
               <FeaturedShowCard show={featured} />
             </section>
         )}

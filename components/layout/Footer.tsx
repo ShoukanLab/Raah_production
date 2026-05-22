@@ -25,7 +25,7 @@ export function Footer() {
           Quick Links
         </h3>
         <div className="space-y-3">
-          <Link href="/" className="block font-montserrat text-sm text-champagne hover:text-gold transition-colors">
+          <Link href="/#shows" className="block font-montserrat text-sm text-champagne hover:text-gold transition-colors">
             Shows
           </Link>
           <Link href="/about" className="block font-montserrat text-sm text-champagne hover:text-gold transition-colors">
