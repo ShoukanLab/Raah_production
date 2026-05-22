@@ -1,6 +1,7 @@
 'use client'
 
 import { Nav } from './Nav'
+import { Footer } from './Footer'
 
 interface PageShellProps {
   children: React.ReactNode
@@ -14,6 +15,8 @@ export function PageShell({ children }: PageShellProps) {
       <main className="flex-1 overflow-y-auto">
         {children}
       </main>
+
+      <Footer />
     </div>
   )
 }
