@@ -89,14 +89,12 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       )}
 
       {/* MANIFESTO */}
-      <section className="max-w-4xl mx-auto px-6 pt-0 pb-12" ref={addReveal}>
-        <div className="mb-12">
-          <h3 className="font-montserrat text-[9px] font-bold tracking-[0.35em] uppercase text-gold mb-8">
-            Our Story
-          </h3>
-        </div>
+      <section className="max-w-4xl mx-auto px-6 pt-4 pb-10" ref={addReveal}>
+        <h3 className="font-playfair text-3xl text-gold mb-6">
+          Our Story
+        </h3>
 
-        <div className="grid md:grid-cols-2 gap-16 md:gap-20">
+        <div className="grid md:grid-cols-2 gap-10 md:gap-12">
           <div className="about-reveal" ref={addReveal}>
             <h2 className="font-playfair text-[clamp(28px,4vw,44px)] font-normal text-white leading-tight mb-6">
               Music is more than
@@ -133,7 +131,7 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
           </div>
 
           <div className="about-reveal" ref={addReveal}>
-            <h4 className="font-montserrat text-[9px] font-bold tracking-[0.25em] uppercase text-t4 mb-6">
+            <h4 className="font-montserrat text-[9px] font-bold tracking-[0.25em] uppercase text-t4 mb-4">
               What drives us
             </h4>
 
@@ -155,7 +153,7 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
                   desc: "Every detail of a Raah show is intentional. Sound, staging, atmosphere — we obsess over the elements that transform a good concert into an unforgettable one.",
                 },
               ].map((p) => (
-                <div key={p.num} className="border-t border-charcoal pt-6 flex gap-4">
+                <div key={p.num} className="border-t border-charcoal pt-4 flex gap-4">
                   <span className="font-playfair text-sm text-t4 flex-shrink-0">{p.num}</span>
                   <div>
                     <h5 className="font-playfair text-xl text-white mb-2">{p.title}</h5>
@@ -169,7 +167,7 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       </section>
 
       {/* STATEMENT BAND */}
-      <section className="bg-onyx border-y border-charcoal py-12 md:py-16 px-6 about-reveal" ref={addReveal}>
+      <section className="bg-onyx border-y border-charcoal py-10 px-6 about-reveal" ref={addReveal}>
         <div className="max-w-3xl mx-auto text-center">
           <blockquote className="font-playfair italic text-[clamp(20px,3.5vw,36px)] text-white leading-relaxed mb-4">
             "This isn't just event production.
@@ -203,12 +201,12 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       </section>
 
       {/* WHAT WE DO */}
-      <section className="max-w-4xl mx-auto px-6 py-12 about-reveal" ref={addReveal}>
-        <h3 className="font-montserrat text-[9px] font-bold tracking-[0.35em] uppercase text-gold mb-8">
+      <section className="max-w-4xl mx-auto px-6 py-10 about-reveal" ref={addReveal}>
+        <h3 className="font-montserrat text-[9px] font-bold tracking-[0.35em] uppercase text-gold mb-4">
           What We Do
         </h3>
 
-        <h2 className="font-playfair text-[clamp(28px,4vw,44px)] font-normal text-white leading-tight max-w-2xl mb-8">
+        <h2 className="font-playfair text-[clamp(28px,4vw,44px)] font-normal text-white leading-tight max-w-2xl mb-6">
           Live music production,
           <span className="italic text-gold"> end to end.</span>
         </h2>
@@ -259,9 +257,9 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       </section>
 
       {/* CTA */}
-      <section className="max-w-4xl mx-auto px-6 py-12 md:py-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 about-reveal" ref={addReveal}>
+      <section className="max-w-4xl mx-auto px-6 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 about-reveal" ref={addReveal}>
         <div>
-          <h2 className="font-playfair italic text-[clamp(24px,3.5vw,38px)] text-white leading-tight mb-3">
+          <h2 className="font-playfair italic text-[clamp(24px,3.5vw,38px)] text-white leading-tight mb-2">
             Ready to experience
             <br />a Raah show?
           </h2>
