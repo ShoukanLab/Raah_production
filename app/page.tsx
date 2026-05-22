@@ -19,7 +19,7 @@ export default async function HomePage() {
   return (
       <main className="bg-void pb-32">
         {/* Hero Section — description as gold-band banner */}
-        <section className="relative px-6 pt-16 pb-20 overflow-hidden isolate">
+        <section className="relative px-6 pt-16 pb-8 overflow-hidden isolate">
           {/* Gold shimmer band background */}
           <div
               aria-hidden

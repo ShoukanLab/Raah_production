@@ -89,7 +89,7 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       )}
 
       {/* MANIFESTO */}
-      <section className="max-w-4xl mx-auto px-6 py-12" ref={addReveal}>
+      <section className="max-w-4xl mx-auto px-6 pt-0 pb-12" ref={addReveal}>
         <div className="mb-12">
           <h3 className="font-montserrat text-[9px] font-bold tracking-[0.35em] uppercase text-gold mb-8">
             Our Story
