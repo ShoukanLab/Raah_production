@@ -11,7 +11,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { label: 'Shows', href: '/', number: '01' },
-  { label: 'About', href: '/about', number: '02' },
+  { label: 'About', href: '/#about', number: '02' },
   { label: 'Contact', href: '/contact', number: '03' },
 ]
 
@@ -33,6 +33,14 @@ export function Nav() {
 
   const handleMenuItemClick = (href: string) => {
     setIsMenuOpen(false)
+    if (href.startsWith('/#')) {
+      const id = href.slice(2)
+      const el = document.getElementById(id)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+        return
+      }
+    }
     router.push(href)
   }
 

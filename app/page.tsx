@@ -2,6 +2,7 @@ import { getFeaturedShow, getUpcomingShows, getPastShows } from '@/lib/sanity'
 import { EyebrowLabel } from '@/components/ui/EyebrowLabel'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { FeaturedShowCard, ShowCard } from '@/components/shows'
+import { AboutContent } from '@/components/about/AboutContent'
 
 export const metadata = {
   title: {
@@ -10,20 +11,15 @@ export const metadata = {
 }
 
 export default async function HomePage() {
-  const [featured, upcoming, past] = await Promise.all([
+  const [featured, past] = await Promise.all([
     getFeaturedShow(),
-    getUpcomingShows(),
     getPastShows(),
   ])
 
-  const upcomingWithoutFeatured = upcoming.filter(
-      (show) => !featured || show._id !== featured._id
-  )
-
   return (
-      <main className="bg-void pb-32">
+      <main className="bg-void pb-12">
         {/* Hero Section — description as gold-band banner */}
-        <section className="relative px-6 pt-16 pb-20 overflow-hidden isolate">
+        <section className="relative px-6 pt-16 pb-8 overflow-hidden isolate">
           {/* Gold shimmer band background */}
           <div
               aria-hidden
@@ -56,6 +52,11 @@ export default async function HomePage() {
 
             <div className="mt-9 mx-auto h-px w-20 bg-gradient-to-r from-transparent via-gold to-transparent" />
           </div>
+        </section>
+
+        {/* About Section */}
+        <section id="about">
+          <AboutContent showHero={false} />
         </section>
 
         {/* Featured Show Card */}

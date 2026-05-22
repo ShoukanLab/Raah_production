@@ -10,7 +10,7 @@ export function Footer() {
     <footer className="bg-onyx border-t border-[#222] px-6 pt-10 pb-6">
       {/* Brand Block */}
       <div className="mb-10">
-        <h2 className="font-pinyon text-5xl text-gold mb-2">Raah</h2>
+        <h2 className="font-pinyon text-5xl text-white mb-2">Raah</h2>
         <p className="font-montserrat text-[9px] font-bold tracking-[0.2em] uppercase text-gold mb-4">
           Production
         </p>
