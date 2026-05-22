@@ -11,9 +11,8 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { label: 'Shows', href: '/', number: '01' },
-  { label: 'Schedule', href: '/schedule', number: '02' },
-  { label: 'About', href: '/about', number: '03' },
-  { label: 'Contact', href: '/contact', number: '04' },
+  { label: 'About', href: '/about', number: '02' },
+  { label: 'Contact', href: '/contact', number: '03' },
 ]
 
 export function Nav() {
