@@ -1,0 +1,127 @@
+
+> raah-production@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+ ⚠ Port 3001 is in use, trying 3002 instead.
+ ⚠ Port 3002 is in use, trying 3003 instead.
+ ⚠ Port 3003 is in use, trying 3004 instead.
+  ▲ Next.js 14.2.3
+  - Local:        http://localhost:3004
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 3.3s
+ ✓ Compiled /middleware in 347ms (126 modules)
+ ○ Compiling /about ...
+ ⨯ ./components/about/AboutContent.tsx
+Error: 
+  [31mx[0m Unexpected token `main`. Expected jsx identifier
+    ,-[[36;1;4mC:\Users\shamm\raah-production\components\about\AboutContent.tsx[0m:35:1]
+ [2m35[0m |   };
+ [2m36[0m | 
+ [2m37[0m |   return (
+ [2m38[0m |     <main className="bg-void">
+    : [31;1m     ^^^^[0m
+ [2m39[0m |       {/* ── HERO ── */}
+ [2m40[0m |       <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 pb-20 relative overflow-hidden">
+ [2m41[0m |         {/* Decorative noise/grain background */}
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/about/AboutContent.tsx
+./app/(pages)/about/page.tsx
+ ⨯ ./components/about/AboutContent.tsx
+Error: 
+  [31mx[0m Unexpected token `main`. Expected jsx identifier
+    ,-[[36;1;4mC:\Users\shamm\raah-production\components\about\AboutContent.tsx[0m:35:1]
+ [2m35[0m |   };
+ [2m36[0m | 
+ [2m37[0m |   return (
+ [2m38[0m |     <main className="bg-void">
+    : [31;1m     ^^^^[0m
+ [2m39[0m |       {/* ── HERO ── */}
+ [2m40[0m |       <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 pb-20 relative overflow-hidden">
+ [2m41[0m |         {/* Decorative noise/grain background */}
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/about/AboutContent.tsx
+./app/(pages)/about/page.tsx
+ ⨯ ./components/about/AboutContent.tsx
+Error: 
+  [31mx[0m Unexpected token `main`. Expected jsx identifier
+    ,-[[36;1;4mC:\Users\shamm\raah-production\components\about\AboutContent.tsx[0m:35:1]
+ [2m35[0m |   };
+ [2m36[0m | 
+ [2m37[0m |   return (
+ [2m38[0m |     <main className="bg-void">
+    : [31;1m     ^^^^[0m
+ [2m39[0m |       {/* ── HERO ── */}
+ [2m40[0m |       <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 pb-20 relative overflow-hidden">
+ [2m41[0m |         {/* Decorative noise/grain background */}
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/about/AboutContent.tsx
+./app/(pages)/about/page.tsx
+ GET /about 500 in 4426ms
+ HEAD /about 500 in 27ms
+ ⨯ ./components/about/AboutContent.tsx
+Error: 
+  [31mx[0m Unexpected token `main`. Expected jsx identifier
+    ,-[[36;1;4mC:\Users\shamm\raah-production\components\about\AboutContent.tsx[0m:35:1]
+ [2m35[0m |   };
+ [2m36[0m | 
+ [2m37[0m |   return (
+ [2m38[0m |     <main className="bg-void">
+    : [31;1m     ^^^^[0m
+ [2m39[0m |       {/* ── HERO ── */}
+ [2m40[0m |       <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 pb-20 relative overflow-hidden">
+ [2m41[0m |         {/* Decorative noise/grain background */}
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/about/AboutContent.tsx
+./app/(pages)/about/page.tsx
+ ⨯ ./components/about/AboutContent.tsx
+Error: 
+  [31mx[0m Unexpected token `main`. Expected jsx identifier
+    ,-[[36;1;4mC:\Users\shamm\raah-production\components\about\AboutContent.tsx[0m:33:1]
+ [2m33[0m |   };
+ [2m34[0m | 
+ [2m35[0m |   return (
+ [2m36[0m |     <main className="bg-void">
+    : [31;1m     ^^^^[0m
+ [2m37[0m |       {/* ── HERO ── */}
+ [2m38[0m |       <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 pb-20 relative overflow-hidden">
+ [2m39[0m |         {/* Decorative noise/grain background */}
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/about/AboutContent.tsx
+./app/(pages)/about/page.tsx
+ ⨯ ./components/about/AboutContent.tsx
+Error: Failed to read source code from C:\Users\shamm\raah-production\components\about\AboutContent.tsx
+
+Caused by:
+    The system cannot find the file specified. (os error 2)
+
+Import trace for requested module:
+./components/about/AboutContent.tsx
+./app
