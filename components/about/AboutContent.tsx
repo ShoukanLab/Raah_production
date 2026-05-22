@@ -257,10 +257,13 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
 
       {/* CTA */}
       <section className="max-w-4xl mx-auto px-6 pt-4 pb-10 about-reveal" ref={addReveal}>
-        <h2 className="font-playfair italic text-[clamp(24px,3.5vw,38px)] text-white leading-tight">
+        <h2 className="font-playfair italic text-[clamp(24px,3.5vw,38px)] text-white leading-tight mb-3">
           Ready to experience
-          <br />a Raah show?
+          <br />a Raah event?
         </h2>
+        <p className="font-montserrat text-sm text-t3 leading-relaxed">
+          Check out our upcoming events.
+        </p>
       </section>
     </div>
   );
