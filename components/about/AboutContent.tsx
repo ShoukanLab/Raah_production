@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
 
 interface AboutContentProps {
   showHero?: boolean;
@@ -257,19 +256,11 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       </section>
 
       {/* CTA */}
-      <section className="max-w-4xl mx-auto px-6 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 about-reveal" ref={addReveal}>
-        <div>
-          <h2 className="font-playfair italic text-[clamp(24px,3.5vw,38px)] text-white leading-tight mb-2">
-            Ready to experience
-            <br />a Raah show?
-          </h2>
-          <p className="font-montserrat text-sm text-t3 leading-relaxed">
-            Browse upcoming events in Edmonton or get in touch about production services.
-          </p>
-        </div>
-        <Link href="/shows" className="btn-gold-filled flex-shrink-0 whitespace-nowrap px-8 py-3 font-montserrat text-sm font-bold tracking-[0.15em] uppercase">
-          View Upcoming Shows
-        </Link>
+      <section className="max-w-4xl mx-auto px-6 pt-4 pb-10 about-reveal" ref={addReveal}>
+        <h2 className="font-playfair italic text-[clamp(24px,3.5vw,38px)] text-white leading-tight">
+          Ready to experience
+          <br />a Raah show?
+        </h2>
       </section>
     </div>
   );
