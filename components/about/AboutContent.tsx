@@ -103,7 +103,7 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
 
             <div className="pl-6 mb-4 border-l border-gold/25 space-y-2">
               <p className="font-cormorant text-lg italic text-t2 leading-relaxed">
-                It's the pause before the lights dim.
+                It&apos;s the pause before the lights dim.
               </p>
               <p className="font-cormorant text-lg italic text-t2 leading-relaxed">
                 The silence before the first note.
@@ -119,12 +119,12 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
             <div className="space-y-2">
               <p className="font-montserrat text-sm text-t3 leading-relaxed">
                 Raah Production was created with one intention: to build unforgettable live music experiences in
-                Edmonton. We believe every show is more than a performance — it's a shared moment between an artist and
+                Edmonton. We believe every show is more than a performance — it&apos;s a shared moment between an artist and
                 an audience that can never be replicated.
               </p>
               <p className="font-montserrat text-sm text-t3 leading-relaxed">
                 From intimate qawali nights to large-scale concerts, we bring together the production craft, the
-                community, and the culture to make it happen. And we're only getting started.
+                community, and the culture to make it happen. And we&apos;re only getting started.
               </p>
             </div>
           </div>
@@ -169,11 +169,11 @@ export function AboutContent({ showHero = true }: AboutContentProps) {
       <section className="bg-onyx border-y border-charcoal py-10 px-6 about-reveal" ref={addReveal}>
         <div className="max-w-3xl mx-auto text-center">
           <blockquote className="font-playfair italic text-[clamp(20px,3.5vw,36px)] text-white leading-relaxed mb-4">
-            "This isn't just event production.
+            &ldquo;This isn&apos;t just event production.
             <br />
             This is culture. This is community.
             <br />
-            This is Raah."
+            This is Raah.&rdquo;
           </blockquote>
 
           <p className="font-montserrat text-[9px] font-bold tracking-[0.3em] uppercase text-t4 flex items-center justify-center gap-4 mb-6">
