@@ -10,7 +10,7 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { label: 'Shows', href: '/', number: '01' },
+  { label: 'Shows', href: '/#shows', number: '01' },
   { label: 'About', href: '/#about', number: '02' },
   { label: 'Contact', href: '/contact', number: '03' },
 ]
