@@ -54,7 +54,7 @@ export default async function ContactPage() {
         </div>
 
         {/* Email */}
-        <div className="bg-onyx border border-charcoal rounded-lg p-4 flex flex-col items-center text-center gap-3">
+        <div className="bg-onyx border border-charcoal rounded-lg p-4 flex flex-col items-center text-center gap-3 min-w-0">
           <div className="w-12 h-12 rounded-full border border-gold/30 flex items-center justify-center text-gold">
             <svg
               width="20"
@@ -70,7 +70,7 @@ export default async function ContactPage() {
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
             </svg>
           </div>
-          <div>
+          <div className="min-w-0 w-full">
             <p className="font-montserrat text-[9px] font-bold uppercase tracking-[0.18em] text-t3 mb-1">
               Email
             </p>
