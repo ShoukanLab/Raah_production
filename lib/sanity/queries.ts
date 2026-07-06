@@ -165,7 +165,8 @@ export const getShowBySlug = (slug: string) =>
         poster,
         lineup,
         supabaseShowId,
-        featured
+        featured,
+        ticketUrl
       }`
 
       try {

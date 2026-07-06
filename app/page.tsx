@@ -1,12 +1,25 @@
+import type { Metadata } from 'next'
 import { getFeaturedShow, getUpcomingShows, getPastShows } from '@/lib/sanity'
 import { EyebrowLabel } from '@/components/ui/EyebrowLabel'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { FeaturedShowCard, ShowCard } from '@/components/shows'
 import { AboutContent } from '@/components/about/AboutContent'
 
-export const metadata = {
+const description =
+  'Raah Production is a Toronto-based live music and concert production company. Discover upcoming shows in Canada and secure your tickets.'
+
+export const metadata: Metadata = {
   title: {
     absolute: 'Raah Production — Live Music & Events',
+  },
+  description,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Raah Production — Live Music & Events',
+    description,
+    url: '/',
   },
 }
 

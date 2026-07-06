@@ -34,13 +34,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
-  const description = show.venue
-    ? `${show.name} at ${show.venue.name}${show.venue.city ? `, ${show.venue.city}` : ''}`
-    : show.name
+  const venuePart = show.venue
+    ? ` at ${show.venue.name}${show.venue.city ? `, ${show.venue.city}` : ''}`
+    : ''
+  const datePart = formatLongDate(show.date)
+  const description = `${show.name}${venuePart} — ${datePart}. Get tickets from Raah Production.`
+  const canonicalUrl = `/shows/${slug}`
+  const ogImage = show.poster
+    ? [{ url: urlFor(show.poster).width(1200).height(630).url(), width: 1200, height: 630, alt: `${show.name} poster` }]
+    : undefined
 
   return {
     title: show.name,
     description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: show.name,
+      description,
+      url: canonicalUrl,
+      images: ogImage,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: show.name,
+      description,
+    },
   }
 }
 
@@ -68,8 +88,43 @@ export default async function ShowPage({ params }: PageProps) {
     notFound()
   }
 
+  const eventSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'MusicEvent',
+    name: show.name,
+    startDate: show.date,
+    location: show.venue
+      ? {
+          '@type': 'Place',
+          name: show.venue.name,
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: show.venue.city,
+            addressCountry: 'CA',
+          },
+        }
+      : undefined,
+    performer: show.lineup?.map((item) => ({
+      '@type': 'MusicGroup',
+      name: item.artistName,
+    })),
+    image: show.poster ? [urlFor(show.poster).width(1200).url()] : undefined,
+    offers: show.ticketUrl
+      ? {
+          '@type': 'Offer',
+          url: show.ticketUrl,
+          availability:
+            show.status === 'sold_out' ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
+        }
+      : undefined,
+  }
+
   return (
     <main className="bg-void pb-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }}
+      />
       {/* Back Navigation */}
       <section className="px-6 pt-6">
         <Link

@@ -1,7 +1,22 @@
+import type { Metadata } from 'next';
 import { ContactForm } from '@/components/forms/ContactForm';
 import { getContactInfo } from '@/lib/sanity';
 
-export const metadata = { title: 'Contact' };
+const description =
+  'Get in touch with Raah Production for bookings, press, and collaborations.';
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description,
+  alternates: {
+    canonical: '/contact',
+  },
+  openGraph: {
+    title: 'Contact | Raah Production',
+    description,
+    url: '/contact',
+  },
+};
 
 const linkProps = (url: string) =>
   url === '#' ? {} : { target: '_blank' as const, rel: 'noopener noreferrer' as const };
