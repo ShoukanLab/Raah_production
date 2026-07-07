@@ -98,13 +98,19 @@ export interface ContactNotificationData {
 }
 
 export async function sendContactNotification(data: ContactNotificationData) {
-  return resend.emails.send({
+  const { data: sendData, error } = await resend.emails.send({
     from: FROM,
     to: CONTACT_TO_EMAIL,
     reply_to: data.email,
     subject: `[Contact] ${data.inquiryType} — ${data.firstName} ${data.lastName}`,
     html: buildContactNotificationHtml(data),
   });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return sendData;
 }
 
 function buildContactNotificationHtml(data: ContactNotificationData): string {
