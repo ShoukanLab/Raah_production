@@ -76,7 +76,7 @@ Pinyon Script | Cormorant Garamond:ital,wght@0,300;1,300 | Playfair Display:ital
 |---|---|---|
 | `/` | Home | Hero, upcoming shows list, past shows |
 | `/shows/[slug]` | Show Detail | Full event info, lineup, poster, ticket purchase |
-| `/schedule` | Schedule | Full calendar view, filterable by genre |
+| `/schedule` | Schedule | Full calendar view |
 | `/contact` | Contact | Contact form, info, social links |
 
 ### Staff (protected)
@@ -184,7 +184,6 @@ Sanity handles all **editorial content** — the things Raah staff update regula
 - Show name, date, venue, description
 - Lineup (artists, roles, set times)
 - Event poster image
-- Genre tags
 - Ticket type descriptions (display copy only — not pricing/inventory)
 
 Supabase handles all **transactional data** — the things the system writes:
@@ -207,7 +206,7 @@ The `sanity_id` field on the `shows` table is the bridge between the two. When a
 
 ### Milestone 2 — Sanity CMS
 - Install and configure Sanity v3
-- Define `show` schema: title, slug, date, venue, description, lineup array, poster image, genre tags
+- Define `show` schema: title, slug, date, venue, description, lineup array, poster image
 - Write GROQ queries: all upcoming shows, single show by slug
 - Set up Sanity client in Next.js (`/lib/sanity.ts`)
 - Connect home page and show detail page to live Sanity data
@@ -237,7 +236,7 @@ The `sanity_id` field on the `shows` table is the bridge between the two. When a
 ### Milestone 6 — Frontend Pages
 - Home page: hero, upcoming shows list (featured card + regular cards), past shows
 - Show detail: hero, meta (date/time/venue), description, poster section, lineup, ticket card
-- Schedule page: month-grouped event list, genre filter pills
+- Schedule page: month-grouped event list
 - Contact page: contact info cards, enquiry form, social links
 - All pages must match the mobile prototype design exactly
 

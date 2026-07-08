@@ -143,7 +143,6 @@ export default async function ShowPage({ params }: PageProps) {
         <div className="relative z-10 max-w-2xl mx-auto">
           {/* Badge Row */}
           <div className="flex items-center gap-3 mb-4">
-            {show.genre && <Tag variant="gold">{show.genre}</Tag>}
             {show.status && show.status !== 'upcoming' && (
               <Tag variant={show.status === 'sold_out' ? 'gray' : 'gold'}>
                 {show.status === 'sold_out' && 'Sold Out'}

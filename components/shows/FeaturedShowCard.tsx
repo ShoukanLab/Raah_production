@@ -73,10 +73,6 @@ export function FeaturedShowCard({ show, className }: FeaturedShowCardProps) {
 
         {/* Content — bottom, overlaid */}
         <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-          <div className="flex items-center justify-between mb-3">
-            <Tag variant="gold">{show.genre}</Tag>
-          </div>
-
           <h2 className="font-playfair text-2xl text-white leading-tight mb-2">
             {show.name}
           </h2>

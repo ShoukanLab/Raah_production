@@ -12,8 +12,6 @@ export interface Venue {
   address?: string;
 }
 
-export type Genre = "Jazz" | "Electronic" | "Acoustic" | "Orchestral";
-
 export type ShowStatus = "upcoming" | "selling_fast" | "sold_out" | "completed";
 
 export interface LineupItem {
@@ -33,7 +31,6 @@ export interface Show {
   date: string;
   doorsTime?: string;
   venue?: Venue;
-  genre: Genre;
   description?: PortableTextBlock[];
   status: ShowStatus;
   poster?: SanityImage;

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { cn } from '@/lib/cn'
 import { Tag } from '@/components/ui/Tag'
+import { getStatusLabel } from '@/lib/showStatus'
 import type { Show } from '@/types/sanity'
 
 interface ShowCardProps {
@@ -55,8 +56,8 @@ export function ShowCard({ show, isPast = false, className }: ShowCardProps) {
 
       {/* Tag + chevron — right */}
       <div className="flex items-center gap-3 flex-shrink-0">
-        <Tag variant={isPast ? 'gray' : 'gold'}>
-          {isPast ? 'Completed' : show.genre}
+        <Tag variant={isPast || show.status === 'sold_out' ? 'gray' : 'gold'}>
+          {isPast ? 'Completed' : getStatusLabel(show.status)}
         </Tag>
         <svg
           aria-hidden="true"

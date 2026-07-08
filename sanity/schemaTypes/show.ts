@@ -64,21 +64,6 @@ export const showType = defineType({
       description: "Link to the third-party ticket sales page (e.g. Eventbrite, Ticketmaster)",
     }),
     defineField({
-      name: "genre",
-      title: "Genre",
-      type: "string",
-      options: {
-        list: [
-          { title: "Jazz", value: "Jazz" },
-          { title: "Electronic", value: "Electronic" },
-          { title: "Acoustic", value: "Acoustic" },
-          { title: "Orchestral", value: "Orchestral" },
-        ],
-        layout: "radio",
-      },
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: "description",
       title: "Description",
       type: "array",
