@@ -1,8 +1,19 @@
 import { Resend } from "resend";
 
-// Note: RESEND_API_KEY is optional during development
-// The contact form will fail at runtime if Resend is not configured
-export const resend = new Resend(process.env.RESEND_API_KEY || "");
+// Note: RESEND_API_KEY is optional during development.
+// The client is constructed lazily so a missing key only fails the
+// request that needs it, instead of crashing module load (and the build).
+let resendClient: Resend | null = null;
+
+function getResendClient(): Resend {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY is not configured.");
+  }
+  if (!resendClient) {
+    resendClient = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resendClient;
+}
 
 export const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "tickets@raah.production";
 export const FROM_NAME = process.env.RESEND_FROM_NAME ?? "Raah Production";
@@ -22,7 +33,7 @@ export interface OrderConfirmationData {
 }
 
 export async function sendOrderConfirmation(data: OrderConfirmationData) {
-  return resend.emails.send({
+  return getResendClient().emails.send({
     from: FROM,
     to: data.to,
     subject: `Your tickets for ${data.showName} — Order #${data.orderNumber}`,
@@ -98,7 +109,7 @@ export interface ContactNotificationData {
 }
 
 export async function sendContactNotification(data: ContactNotificationData) {
-  const { data: sendData, error } = await resend.emails.send({
+  const { data: sendData, error } = await getResendClient().emails.send({
     from: FROM,
     to: CONTACT_TO_EMAIL,
     reply_to: data.email,
