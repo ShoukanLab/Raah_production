@@ -1,6 +1,8 @@
 # Raah Production
 
-Premium live music experiences platform — Next.js 14, Sanity v3, Supabase, Stripe, Resend.
+Marketing site for Raah Production, a Toronto-based live music and concert production company — Next.js 14, Sanity v3, Supabase, Resend.
+
+Show content (details, lineups, posters) is managed in an embedded Sanity Studio at `/studio`. Ticket purchases currently route to an external ticketing link per show (`ExternalTicketButton`) rather than an in-house checkout.
 
 ---
 
@@ -9,12 +11,26 @@ Premium live music experiences platform — Next.js 14, Sanity v3, Supabase, Str
 | Layer | Technology |
 |---|---|
 | Framework | Next.js 14 (App Router) |
-| CMS | Sanity v3 |
-| Database | Supabase (PostgreSQL) |
-| Payments | Stripe |
-| Email | Resend |
+| CMS | Sanity v3 (embedded studio at `/studio`) |
+| Database | Supabase (PostgreSQL) — show records, linked to Sanity via `sanity_id` |
+| Email | Resend — contact form notifications |
 | Styling | Tailwind CSS |
 | Language | TypeScript |
+| Tests | Vitest |
+
+---
+
+## Pages & Routes
+
+| Route | Purpose |
+|---|---|
+| `/` | Home |
+| `/shows` | Show listings |
+| `/shows/[slug]` | Show detail — lineup, poster, external ticket link |
+| `/contact` | Contact form (sends via Resend) |
+| `/studio` | Embedded Sanity Studio (content editing) |
+| `/api/contact` | Contact form submission handler |
+| `/api/sanity/revalidate` | On-demand ISR revalidation webhook from Sanity |
 
 ---
 
@@ -33,62 +49,42 @@ npm install
 Copy the example file and fill in each value:
 
 ```bash
-cp .env.local.example .env.local
+cp .env.example .env.local
 ```
 
 | Variable | Where to find it |
 |---|---|
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity dashboard → Project settings |
 | `NEXT_PUBLIC_SANITY_DATASET` | `production` (default) |
-| `SANITY_API_TOKEN` | Sanity dashboard → API → Tokens (Editor or Write access) |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | e.g. `2024-01-01` |
+| `SANITY_API_TOKEN` | Sanity dashboard → API → Tokens (read access) |
+| `SANITY_WEBHOOK_SECRET` | Set when configuring the revalidation webhook |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase dashboard → Project Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase dashboard → Project Settings → API |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase dashboard → Project Settings → API (keep secret!) |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe dashboard → Developers → API keys |
-| `STRIPE_SECRET_KEY` | Stripe dashboard → Developers → API keys |
-| `STRIPE_WEBHOOK_SECRET` | See Stripe webhooks setup below |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase dashboard → Project Settings → API (server-only, keep secret) |
 | `RESEND_API_KEY` | Resend dashboard → API Keys |
 | `RESEND_FROM_EMAIL` | A verified sender address in Resend |
+| `RESEND_FROM_NAME` | Display name for outgoing emails |
+| `CONTACT_TO_EMAIL` | Inbox that receives contact form submissions |
 | `NEXT_PUBLIC_APP_URL` | `http://localhost:3000` in development |
 
 ### 3. Supabase — run the schema
 
 1. Open your Supabase project → SQL Editor → New query
 2. Paste the contents of `database/schema.sql` and run it
-3. All tables, RLS policies, indexes, and triggers will be created
 
-### 4. Sanity — initialise the studio
+Ongoing schema changes after the baseline are tracked as migrations in `supabase/migrations/`.
 
-If this is a brand-new Sanity project:
+### 4. Sanity — content schema
 
-```bash
-# From the project root
-npx sanity init --project <YOUR_PROJECT_ID> --dataset production
-```
+The Show schema lives in `sanity/schemaTypes/show.ts` (plus `contactInfo.ts` for contact page content). The studio runs embedded inside the Next.js app — no separate deployment or dev server needed.
 
-Then start the embedded studio (runs at `http://localhost:3333`):
-
-```bash
-npm run sanity
-```
-
-The Shows schema is already wired up in `sanity/schemaTypes/show.ts`.
-
-### 5. Stripe — local webhook forwarding
-
-Install the Stripe CLI, then forward events to your local server:
-
-```bash
-stripe listen --forward-to localhost:3000/api/webhooks/stripe
-```
-
-Copy the webhook signing secret it prints and set it as `STRIPE_WEBHOOK_SECRET` in `.env.local`.
-
-### 6. Start the dev server
+### 5. Start the dev server
 
 ```bash
 npm run dev
 # → http://localhost:3000
+# Studio → http://localhost:3000/studio
 ```
 
 ---
@@ -98,41 +94,43 @@ npm run dev
 ```
 raah-production/
 ├── app/
-│   ├── layout.tsx                  Root layout (fonts, metadata)
-│   ├── page.tsx                    Home page
+│   ├── layout.tsx                     Root layout (fonts, metadata)
+│   ├── page.tsx                       Home page
+│   ├── sitemap.ts / robots.ts         SEO
 │   ├── (pages)/
-│   │   ├── shows/                  Show listings
-│   │   ├── schedule/               Calendar view
-│   │   ├── contact/                Contact form
-│   │   └── [show-detail]/          Dynamic show detail page
+│   │   ├── shows/                     Show listing
+│   │   ├── shows/[slug]/              Show detail page
+│   │   └── contact/                   Contact page
+│   ├── studio/[[...tool]]/            Embedded Sanity Studio
 │   └── api/
-│       ├── webhooks/
-│       │   ├── stripe/route.ts     Stripe payment events
-│       │   └── resend/route.ts     Email delivery events
-│       └── sanity/
-│           └── revalidate/route.ts On-demand ISR revalidation
+│       ├── contact/route.ts           Contact form → Resend
+│       └── sanity/revalidate/route.ts On-demand ISR revalidation
 ├── components/
-│   ├── nav/                        Navigation components
-│   ├── cards/                      Show / artist card components
-│   ├── forms/                      Checkout, contact forms
-│   └── ui/                         Shared primitives (Button, Input…)
+│   ├── nav/                           Navigation
+│   ├── layout/                        Shared layout pieces
+│   ├── cards/                         Show card components
+│   ├── shows/                         Show detail components (tickets, calendar)
+│   ├── checkout/                      Add-to-calendar helper
+│   ├── forms/                         Contact form
+│   ├── about/                         About page content
+│   └── ui/                            Shared primitives
 ├── lib/
-│   ├── sanity.ts                   Sanity client + urlFor helper
-│   ├── supabase.ts                 Supabase browser + admin clients
-│   ├── stripe.ts                   Stripe client + webhook verifier
-│   └── resend.ts                   Resend client + email helpers
+│   ├── sanity/                        Sanity client, queries, image builder
+│   ├── supabase/                      Supabase browser + server clients
+│   ├── resend.ts                      Resend client + email helpers
+│   ├── showStatus.ts                  Show status label mapping
+│   └── cn.ts                          classnames helper
 ├── types/
-│   ├── database.ts                 Supabase table types (keep in sync)
-│   └── sanity.ts                   Sanity document types
-├── styles/
-│   └── globals.css                 Tailwind + Raah design tokens
+│   ├── database.ts                    Supabase table types
+│   └── sanity.ts                      Sanity document types
 ├── sanity/
-│   ├── sanity.config.ts            Sanity Studio configuration
-│   └── schemaTypes/
-│       ├── index.ts
-│       └── show.ts                 Show document schema
+│   ├── sanity.config.ts               Sanity Studio configuration
+│   └── schemaTypes/                   show.ts, contactInfo.ts, index.ts
+├── supabase/
+│   └── migrations/                    Incremental schema migrations
+├── middleware.ts                      Supabase auth session refresh
 └── database/
-    └── schema.sql                  Supabase DDL (run once)
+    └── schema.sql                     Supabase DDL (baseline)
 ```
 
 ---
@@ -143,46 +141,42 @@ raah-production/
 Void       #0A0A0A   (page background)
 Onyx       #111111   (card backgrounds)
 Charcoal   #1A1A1A   (input backgrounds, dividers)
+Border     #222222   (default borders)
 Gold       #C9A96E   (primary accent)
-Champagne  #E8D5B0   (body text)
+Champagne  #E8D5B0   (secondary accent)
 ```
 
-**Fonts** (loaded via Google Fonts in `globals.css`):
+**Fonts** (loaded via Google Fonts):
 
 | Role | Font |
 |---|---|
-| Logo / display | Pinyon Script |
-| Headings (h1–h3) | Playfair Display |
-| Sub-headings (h4–h6) | Cormorant Garamond |
-| UI / body | Montserrat |
-
-Tailwind classes: `font-pinyon`, `font-playfair`, `font-cormorant`, `font-montserrat`
+| Logo | Pinyon Script |
+| Headings, artist names, prices | Playfair Display |
+| Subheadings, poster copy | Cormorant Garamond |
+| UI — nav, buttons, labels, body | Montserrat |
 
 ---
 
 ## Deployment (Vercel)
 
-1. Push to GitHub
-2. Import repo in Vercel
-3. Add all environment variables from `.env.local.example`
-4. Set `NEXT_PUBLIC_APP_URL` to your production domain
-5. Register the production Stripe webhook:
-   - Endpoint: `https://yourdomain.com/api/webhooks/stripe`
-   - Events: `payment_intent.succeeded`, `payment_intent.payment_failed`, `charge.refunded`
-6. Register the Sanity revalidation webhook:
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for the full step-by-step guide. In short:
+
+1. Push to GitHub, import the repo in Vercel (production branch `main`)
+2. Add all environment variables from `.env.example`
+3. Register the Sanity revalidation webhook:
    - Endpoint: `https://yourdomain.com/api/sanity/revalidate`
    - Filter: `_type == "show"`
-   - Secret: add as `SANITY_WEBHOOK_SECRET` env var
+   - Secret: `SANITY_WEBHOOK_SECRET`
 
 ---
 
 ## Scripts
 
 ```bash
-npm run dev          # Next.js dev server (port 3000)
+npm run dev          # Next.js dev server (port 3000), studio at /studio
 npm run build        # Production build
 npm run start        # Run production build locally
 npm run lint         # ESLint
 npm run type-check   # TypeScript (no emit)
-npm run sanity       # Sanity Studio dev server (port 3333)
+npm test             # Vitest
 ```
