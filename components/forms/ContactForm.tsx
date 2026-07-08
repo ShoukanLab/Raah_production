@@ -66,6 +66,7 @@ export function ContactForm() {
     setServerError(null);
 
     if (!validateForm()) {
+      setServerError('Please fill in all required fields before submitting.');
       return;
     }
 
