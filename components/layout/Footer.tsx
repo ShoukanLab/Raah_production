@@ -56,7 +56,7 @@ export function Footer() {
             +1 (825) 965-9855
           </a>
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/raah.production"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 font-montserrat text-sm text-champagne hover:text-gold transition-colors"
