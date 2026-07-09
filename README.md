@@ -1,6 +1,6 @@
 # Raah Production
 
-Marketing site for Raah Production, a Toronto-based live music and concert production company — Next.js 14, Sanity v3, Supabase, Resend.
+Marketing site for Raah Production, an Edmonton-based live music and concert production company — Next.js 14, Sanity v3, Supabase, Resend.
 
 Show content (details, lineups, posters) is managed in an embedded Sanity Studio at `/studio`. Ticket purchases currently route to an external ticketing link per show (`ExternalTicketButton`) rather than an in-house checkout.
 
