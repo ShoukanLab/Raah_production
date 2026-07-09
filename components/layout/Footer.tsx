@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Mail, Phone, ArrowUp } from 'lucide-react'
 
 export function Footer() {
@@ -10,10 +11,7 @@ export function Footer() {
     <footer className="bg-onyx border-t border-[#222] px-6 pt-10 pb-6">
       {/* Brand Block */}
       <div className="mb-10">
-        <h2 className="font-pinyon text-5xl text-white mb-2">Raah</h2>
-        <p className="font-montserrat text-[9px] font-bold tracking-[0.2em] uppercase text-gold mb-4">
-          Production
-        </p>
+        <Image src="/logo.png" alt="Raah Production" width={840} height={357} className="h-24 w-auto mb-4" />
         <p className="font-playfair italic text-sm text-t2">
           Where sound travels — built for the way music is meant to be heard.
         </p>
@@ -58,7 +56,7 @@ export function Footer() {
             +1 (825) 965-9855
           </a>
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/raah.production"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 font-montserrat text-sm text-champagne hover:text-gold transition-colors"
@@ -69,17 +67,6 @@ export function Footer() {
               <circle cx="17.5" cy="6.5" r="1.5"></circle>
             </svg>
             Instagram
-          </a>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 font-montserrat text-sm text-champagne hover:text-gold transition-colors"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7a10.6 10.6 0 01-9.5 5"></path>
-            </svg>
-            X / Twitter
           </a>
         </div>
       </div>

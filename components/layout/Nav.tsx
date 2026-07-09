@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 interface MenuItem {
   label: string
@@ -49,11 +50,10 @@ export function Nav() {
       <nav className="sticky top-0 z-50 flex items-center justify-between bg-void/96 px-6 py-3.5 backdrop-blur-lg border-b border-charcoal">
         <button
           onClick={() => router.push('/')}
-          className="flex flex-col items-start hover:opacity-80 transition-opacity"
+          className="flex items-center hover:opacity-80 transition-opacity"
           aria-label="Home"
         >
-          <div className="font-pinyon text-2xl text-white leading-none">Raah</div>
-          <div className="font-montserrat text-xs font-bold tracking-widest uppercase text-gold">Production</div>
+          <Image src="/logo.png" alt="Raah Production" width={840} height={357} className="h-14 w-auto" priority />
         </button>
 
         <button
