@@ -10,12 +10,14 @@ interface ShowCardProps {
   className?: string
 }
 
+const SHOW_TIME_ZONE = 'America/Edmonton'
+
 function formatDateStrip(iso: string) {
   const d = new Date(iso)
   return {
-    month: d.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }).toUpperCase(),
-    day: String(d.getUTCDate()).padStart(2, '0'),
-    weekday: d.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' }).toUpperCase(),
+    month: d.toLocaleDateString('en-US', { month: 'short', timeZone: SHOW_TIME_ZONE }).toUpperCase(),
+    day: d.toLocaleDateString('en-US', { day: '2-digit', timeZone: SHOW_TIME_ZONE }),
+    weekday: d.toLocaleDateString('en-US', { weekday: 'short', timeZone: SHOW_TIME_ZONE }).toUpperCase(),
   }
 }
 

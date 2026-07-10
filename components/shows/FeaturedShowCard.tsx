@@ -31,7 +31,7 @@ export function FeaturedShowCard({ show, className }: FeaturedShowCardProps) {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
-      timeZone: 'UTC',
+      timeZone: 'America/Edmonton',
     })
   }
 
